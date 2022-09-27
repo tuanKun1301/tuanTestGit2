@@ -9,4 +9,9 @@ public class GameUtility : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    public void MuteToggleBackgroundMusic()
+    {
+        SoundManager.instance.ToggleBackgroundMusic();
+    }
 }

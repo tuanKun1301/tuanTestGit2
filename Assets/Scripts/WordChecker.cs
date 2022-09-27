@@ -187,6 +187,7 @@ public class WordChecker : MonoBehaviour
         bool loadNextCategory = false;
         if (currentGameData.selectedBoardData.SearchWords.Count == _completedWords)
         {
+            // Save current level progress
             var categoryName = currentGameData.selectedCategoryName;
             var currentBoardIndex = DataSaver.ReadCategoryCurrentIndexValues(categoryName);
             var nextBoardIndex = -1;
@@ -214,7 +215,7 @@ public class WordChecker : MonoBehaviour
             
             DataSaver.SaveCategoryData(categoryName,currentBoardIndex);
             
-            //unlock next category
+            //unlock next category if currentBoardIndex = currentLevelSize
             if (currentBoardIndex >= currentLevelSize)
             {
                 int i = 0;

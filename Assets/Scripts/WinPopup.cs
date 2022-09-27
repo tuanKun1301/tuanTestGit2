@@ -10,13 +10,10 @@ public class WinPopup : MonoBehaviour
     void Start()
     {
         winPopup.SetActive(false);
+        GameEvents.OnBoardCompleted += ShowWinPopup;
     }
 
-    private void OnEnable()
-    {
-        GameEvents.OnBoardCompleted += ShowWinPopup;
-        
-    }
+    
 
     private void OnDisable()
     {

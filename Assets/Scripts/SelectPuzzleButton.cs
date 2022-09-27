@@ -60,8 +60,7 @@ public class SelectPuzzleButton : MonoBehaviour
             }
         }
 
-        int i = currentIndex;
-        int v = 0;
+       
         if (currentIndex == -1)
             _levelLocked = true;
         // categoryText.text = _levelLocked ? " " : (currentIndex.ToString() + "/" + totalBoards.ToString( ));

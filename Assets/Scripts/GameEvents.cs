@@ -128,5 +128,18 @@ public static class GameEvents
          OnGamOver();
       }
    }
+   
+   
+   public delegate void ToggleSoundFx();
+
+   public static event ToggleSoundFx OnToggleSoundFx;
+
+   public static void ToggleSoundFxMethod()
+   {
+      if (OnToggleSoundFx != null)
+      {
+         OnToggleSoundFx();
+      }
+   }
 
 }
