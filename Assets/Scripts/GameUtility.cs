@@ -14,4 +14,8 @@ public class GameUtility : MonoBehaviour
     {
         SoundManager.instance.ToggleBackgroundMusic();
     }
+    public void MuteToggleSoundFx()
+    {
+        SoundManager.instance.ToggleSoundFx();
+    }
 }

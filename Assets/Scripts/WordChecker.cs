@@ -42,6 +42,7 @@ public class WordChecker : MonoBehaviour
    
     void Start()
     {
+        currentGameData.selectedBoardData.ClearData();
         _assignedPoints = 0;
         _completedWords = 0;
     }
@@ -107,8 +108,9 @@ public class WordChecker : MonoBehaviour
     {
         foreach (var searchingWord in currentGameData.selectedBoardData.SearchWords)
         {
-            if (_word == searchingWord.Word)
+            if (_word == searchingWord.Word && searchingWord.Found == false)
             {
+                searchingWord.Found = true;
                 GameEvents.CorrectWordMethod(_word, _correctSquareList);
                 _completedWords++;
                 _word = string.Empty;
@@ -137,41 +139,29 @@ public class WordChecker : MonoBehaviour
         var direction = (secondPosition - firstPosition).normalized;
         float tolerance = 0.01f;
         if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - 1f) < tolerance)
-        {
             return _rayUp;
-        }
+        
         if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
-        {
             return _rayDown;
-        }
-
+        
         if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y ) < tolerance)
-        {
             return _rayLeft;
-        }
         
         if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y ) < tolerance)
-        {
             return _rayRight;
-        }
         
         if (direction.x < 0f && direction.y > 0f)
-        {
             return _rayDiagonalLeftUp;
-        }
+        
         if (direction.x < 0f && direction.y < 0f)
-        {
             return _rayDiagonalLeftDown;
-        }
+        
         if (direction.x > 0f && direction.y > 0f)
-        {
             return _rayDiagonalRightUp;
-        }
+        
         if (direction.x > 0f && direction.y < 0f)
-        {
             return _rayDiagonalRightDown;
-        }
-
+        
         return _rayDown;
     }
 
@@ -226,26 +216,18 @@ public class WordChecker : MonoBehaviour
                     currentBoardIndex = 0;
                     loadNextCategory = true;
                     if (nextBoardIndex <= 0)
-                    {
                         DataSaver.SaveCategoryData(categoryName,currentBoardIndex);
-                    }
+                    
                 }
                 else
-                {
                     SceneManager.LoadScene("SelectCategory");
-                }
                 //GameEvents.BoardCompletedMethod();
             }
             else
-            {
-                int i = 0;
                 GameEvents.BoardCompletedMethod();
-            }
-
+            
             if (loadNextCategory)
-            {
                 GameEvents.UnlockNextCategoryMethod();
-            }
         }
     }
 }
