@@ -18,9 +18,8 @@ public class SoundManager : MonoBehaviour
             DontDestroyOnLoad(this);
         }
         else
-        {
             Destroy(this);
-        }
+        
     }
 
     void Start()
@@ -33,13 +32,11 @@ public class SoundManager : MonoBehaviour
     {
         _muteBackgroundMusic = !_muteBackgroundMusic;
         if (_muteBackgroundMusic)
-        {
             _audioSource.Stop();
-        }
+        
         else
-        {
             _audioSource.Play();
-        }
+        
     }
 
     public void ToggleSoundFx()
@@ -58,11 +55,11 @@ public class SoundManager : MonoBehaviour
         return _muteSoundFx;
     }
 
-    public void SilienceBackgroudMusic(bool silience)
+    public void SilenceBackgroundMusic(bool silence)
     {
         if (_muteBackgroundMusic == false)
         {
-            if (silience)
+            if (silence)
                 _audioSource.volume = 0f;
             else
                 _audioSource.volume = 1f;

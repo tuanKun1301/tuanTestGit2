@@ -42,9 +42,8 @@ public class UnlockLevelPopup : MonoBehaviour
             }
 
             if (writing.name == currentGameData.selectedCategoryName)
-            {
                 captureNext = true;
-            }
+            
         }
         winPopup.SetActive(true);
             

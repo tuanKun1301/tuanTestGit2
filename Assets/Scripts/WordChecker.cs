@@ -221,7 +221,6 @@ public class WordChecker : MonoBehaviour
                 }
                 else
                     SceneManager.LoadScene("SelectCategory");
-                //GameEvents.BoardCompletedMethod();
             }
             else
                 GameEvents.BoardCompletedMethod();

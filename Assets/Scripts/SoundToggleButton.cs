@@ -31,16 +31,13 @@ public class SoundToggleButton : MonoBehaviour
     public void ToggleButton()
     {
         var muted = false;
-        if (type == ButtonType.BackgroundMusic)
-        {
-            muted = SoundManager.instance.IsBackgroundMusicMuted();
-            
-        }
-        else
-        {
-            muted = SoundManager.instance.IsSoundFxMuted();
-        }
-
+        // if (type == ButtonType.BackgroundMusic)
+        //     muted = SoundManager.instance.IsBackgroundMusicMuted();
+        // else
+        //     muted = SoundManager.instance.IsSoundFxMuted();
+        muted = (type == ButtonType.BackgroundMusic)
+            ? SoundManager.instance.IsBackgroundMusicMuted()
+            : SoundManager.instance.IsSoundFxMuted();
         if (muted)
         {
             _image.sprite = offSprite;
