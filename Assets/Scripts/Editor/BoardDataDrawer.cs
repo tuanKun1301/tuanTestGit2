@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
@@ -34,9 +35,13 @@ public class BoardDataDrawer : Editor
         ClearBoardButton();
         FillUpWithRandomLettersButton();
         GUILayout.EndHorizontal();
-
+        
         EditorGUILayout.Space();
         _dataList.DoLayoutList();
+        
+        GUILayout.BeginHorizontal();
+        AutoFillRandomWord();
+        GUILayout.EndHorizontal();
 
         serializedObject.ApplyModifiedProperties();
 
@@ -52,7 +57,7 @@ public class BoardDataDrawer : Editor
         var rowsTemp = GameDataInstance.Rows;
 
         GameDataInstance.Columns = EditorGUILayout.IntField("Columns", GameDataInstance.Columns);
-        GameDataInstance.Rows = EditorGUILayout.IntField("Columns", GameDataInstance.Rows);
+        GameDataInstance.Rows = EditorGUILayout.IntField("Rows", GameDataInstance.Rows);
         
         if((GameDataInstance.Columns != columnsTemp || GameDataInstance.Rows != rowsTemp) && GameDataInstance.Columns > 0 && GameDataInstance.Rows > 0)
         {
@@ -110,6 +115,7 @@ public class BoardDataDrawer : Editor
 
     private void InitializeRecordableList(ref ReorderableList list, string propertyName, string listLabel)
     {
+        int i = 0;
         list = new ReorderableList(serializedObject, serializedObject.FindProperty(propertyName),
             true, true, true, true);
         list.drawHeaderCallback = (Rect rect) =>
@@ -121,11 +127,16 @@ public class BoardDataDrawer : Editor
         {
             var element = l.serializedProperty.GetArrayElementAtIndex(index);
             rect.y += 2;
-
+            //Debug.Log(propertyName);
             EditorGUI.PropertyField(
                 new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, EditorGUIUtility.singleLineHeight),
                 element.FindPropertyRelative("Word"), GUIContent.none);
         };
+        // foreach (var data in list.l)
+        // {
+        //     Debug.Log("Show Name:" + data );
+        // }    
+        
     }
 
     private void ConvertToUpperButton()
@@ -172,10 +183,10 @@ public class BoardDataDrawer : Editor
 
     private void FillUpWithRandomLettersButton()
     {
-        if(GUILayout.Button("Fill Up With  Random"))
+        if(GUILayout.Button("Fill Up With Random"))
         {
             for (int i = 0; i < GameDataInstance.Columns; i++)
-            {
+            { 
                 for (int j = 0; j < GameDataInstance.Rows; j++)
                 {
                     int errorCounter = Regex.Matches(GameDataInstance.Board[i].Row[j], @"[a-zA-Z]").Count;
@@ -190,4 +201,63 @@ public class BoardDataDrawer : Editor
             }
         }
     }
+    
+    private BoardData boardData;
+    // auto generate word
+    private void AutoFillRandomWord()
+    {
+        //var listWord = _dataList.li;
+        if (GUILayout.Button("Auto Fill Words"))
+        {
+            var list = GameDataInstance.SearchWords;
+            
+            var randomColumn = UnityEngine.Random.Range(1, GameDataInstance.Columns);
+            var randomRow = UnityEngine.Random.Range(1, GameDataInstance.Rows);
+            if (list != null)
+            {
+                foreach (var data in list)
+                {
+                    //get letter of words
+                    var letters = data.Word.ToCharArray();
+                    
+                    foreach (var letter in letters)
+                    {
+                        Debug.Log("Show letter:"+letter);
+                        if (CheckRay(randomColumn,randomRow,letters) == 1)
+                        {
+                            // if(letter.Equals(letters[0]))
+                            //     GameDataInstance.Board[randomColumn].Row[randomRow] = letter.ToString();
+                            // else
+                                GameDataInstance.Board[randomColumn].Row[randomRow] = letter.ToString();
+                                Debug.Log(randomColumn);
+                                randomColumn++;
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                    
+                    // random a word in the board
+
+                    
+                        
+                }
+            } 
+        }
+    }
+
+    public int CheckRay(int ColumnPosition, int RowPosition, char[] word)
+    {
+        // check horizontal case
+        int i = 0;
+        if ((ColumnPosition + word.Length) < GameDataInstance.Columns &&
+            (ColumnPosition - word.Length) > 0)
+        {
+            return 1;
+        }
+            
+        return 0;
+    }
+    
 }

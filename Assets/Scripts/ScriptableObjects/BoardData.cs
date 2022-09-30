@@ -66,6 +66,10 @@ public class BoardData : ScriptableObject
         }
     }
 
+    public List<SeachingWord> GetSearchWords()
+    {
+        return SearchWords;
+    }
 
     public void CreateNewBoard()
     {

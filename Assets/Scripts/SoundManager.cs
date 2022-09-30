@@ -25,7 +25,7 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
-        _audioSource.Play();
+        //_audioSource.Play();
     }
 
     public void ToggleBackgroundMusic()

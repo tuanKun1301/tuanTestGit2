@@ -18,134 +18,148 @@ MonoBehaviour:
   Board:
   - Size: 10
     Row:
-    - R
-    - F
-    - P
-    - F
-    - T
-    - I
-    - Z
-    - C
-    - A
-    - T
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   - Size: 10
     Row:
-    - A
-    - D
-    - T
-    - B
-    - M
-    - B
-    - I
-    - Z
-    - Q
-    - R
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   - Size: 10
     Row:
-    - T
-    - O
-    - W
-    - H
-    - S
-    - O
-    - G
-    - V
-    - E
-    - G
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   - Size: 10
     Row:
-    - D
-    - G
-    - W
-    - O
-    - L
-    - F
-    - N
-    - G
-    - I
-    - C
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   - Size: 10
     Row:
-    - O
-    - P
-    - D
-    - R
-    - G
-    - F
-    - I
-    - K
-    - K
-    - J
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   - Size: 10
     Row:
-    - D
-    - G
-    - D
-    - S
-    - R
-    - T
-    - C
-    - S
-    - E
-    - H
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   - Size: 10
     Row:
-    - A
-    - L
-    - K
-    - E
-    - S
-    - U
-    - O
-    - M
-    - H
-    - Y
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   - Size: 10
     Row:
-    - E
-    - L
-    - E
-    - P
-    - H
-    - A
-    - N
-    - T
-    - N
-    - E
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   - Size: 10
     Row:
-    - I
-    - D
-    - O
-    - N
-    - K
-    - E
-    - Y
-    - B
-    - Q
-    - G
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   - Size: 10
     Row:
-    - P
-    - G
-    - W
-    - N
-    - I
-    - H
-    - P
-    - L
-    - O
-    - D
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - ' '
   SearchWords:
-  - Word: HORSE
-  - Word: FISH
-  - Word: CAT
-  - Word: DOG
-  - Word: MOUSE
-  - Word: DEER
-  - Word: WOLF
-  - Word: TIGER
-  - Word: MONKEY
-  - Word: DONKEY
-  - Word: ELEPHANT
-  - Word: DOLPHIN
+  - Found: 0
+    Word: HORSE
+  - Found: 0
+    Word: FISH
+  - Found: 0
+    Word: CAT
+  - Found: 0
+    Word: DOG
+  - Found: 0
+    Word: MOUSE
+  - Found: 0
+    Word: DEER
+  - Found: 0
+    Word: WOLF
+  - Found: 0
+    Word: TIGER
+  - Found: 0
+    Word: MONKEY
+  - Found: 0
+    Word: DONKEY
+  - Found: 0
+    Word: ELEPHANT
+  - Found: 0
+    Word: DOLPHIN
+  - Found: 0
+    Word: 
