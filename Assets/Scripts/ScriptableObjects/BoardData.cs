@@ -13,13 +13,24 @@ public class BoardData : ScriptableObject
         [HideInInspector] public bool Found = false;
         public string Word;
     }
-
+    public enum Ray
+    {
+        rayUp,
+        rayDown,
+        rayLeft,
+        rayRight,
+        rayDiagonalLeftUp,
+        rayDiagonalLeftDown,
+        rayDiagonalRightUp,
+        rayDiagonalRightDown,
+    }
     [System.Serializable]
     public class BoardRow
     {
         public int Size;
         public string[] Row;
 
+        
         public BoardRow()
         {
         }
