@@ -12,17 +12,18 @@ public class SelectPuzzleButton : MonoBehaviour
     public GameLevelData levelData;
     public Text categoryText;
     public Image progressBarFilling;
-    
+
 
     private string gameSceneName = "GameScene";
     private bool _levelLocked;
+
     void Start()
     {
         _levelLocked = false;
         var button = GetComponent<Button>();
         button.onClick.AddListener(OnButtonClick);
         UpdateButtonInformation();
-        
+
         if (_levelLocked)
         {
             button.interactable = false;
@@ -31,13 +32,11 @@ public class SelectPuzzleButton : MonoBehaviour
         {
             button.interactable = true;
         }
-
     }
 
-   
+
     void Update()
     {
-        
     }
 
     private void UpdateButtonInformation()
@@ -60,15 +59,15 @@ public class SelectPuzzleButton : MonoBehaviour
             }
         }
 
-       
+
         if (currentIndex == -1)
             _levelLocked = true;
         // categoryText.text = _levelLocked ? " " : (currentIndex.ToString() + "/" + totalBoards.ToString( ));
-        categoryText.text = _levelLocked ? string.Empty : (currentIndex.ToString() +"/"+ totalBoards.ToString());
+        categoryText.text = _levelLocked ? string.Empty : (currentIndex.ToString() + "/" + totalBoards.ToString());
         progressBarFilling.fillAmount =
             (currentIndex > 0 && totalBoards > 0) ? ((float)currentIndex / (float)totalBoards) : 0f;
-
     }
+
     private void OnButtonClick()
     {
         gameData.selectedCategoryName = gameObject.name;

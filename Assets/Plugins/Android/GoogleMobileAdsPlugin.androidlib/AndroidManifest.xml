@@ -5,10 +5,10 @@ application's manifest, adding the necessary metadata
 required for displaying ads.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.unity.ads"
-    android:versionName="1.0"
-    android:versionCode="1">
-  <application>
-    <uses-library android:required="false" android:name="org.apache.http.legacy"/>
-  </application>
+          package="com.google.unity.ads"
+          android:versionName="1.0"
+          android:versionCode="1">
+    <application>
+        <uses-library android:required="false" android:name="org.apache.http.legacy"/>
+    </application>
 </manifest>

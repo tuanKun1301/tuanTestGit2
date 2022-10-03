@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WordsGrid : MonoBehaviour
 {
-
     public GameData currentGameData;
     public GameObject gridSquarePrefab;
     public AlphabetData alphabetData;
@@ -26,7 +25,7 @@ public class WordsGrid : MonoBehaviour
         var squareRect = _squareList[0].GetComponent<SpriteRenderer>().sprite.rect;
         var squareTransform = _squareList[0].GetComponent<Transform>();
 
-        var offset = new Vector2 
+        var offset = new Vector2
         {
             x = (squareRect.width * squareTransform.localScale.x + squareOffset) * 0.01f,
             y = (squareRect.height * squareTransform.localScale.y + squareOffset) * 0.01f
@@ -36,9 +35,9 @@ public class WordsGrid : MonoBehaviour
         int columnNumber = 0;
         int rowNumber = 0;
 
-        foreach(var square in _squareList)
+        foreach (var square in _squareList)
         {
-            if(rowNumber +1 > currentGameData.selectedBoardData.Rows)
+            if (rowNumber + 1 > currentGameData.selectedBoardData.Rows)
             {
                 columnNumber++;
                 rowNumber = 0;
@@ -64,7 +63,7 @@ public class WordsGrid : MonoBehaviour
         squareSize.y = squareRect.height * squareTransform.localScale.y;
 
         var midWidthPosition = (((currentGameData.selectedBoardData.Columns - 1) * squareSize.x) / 2) * 0.01f;
-        var midWidthHeight = (((currentGameData.selectedBoardData.Rows - 1) * squareSize.y) / 2)* 0.01f;
+        var midWidthHeight = (((currentGameData.selectedBoardData.Rows - 1) * squareSize.y) / 2) * 0.01f;
 
         startPosition.x = (midWidthPosition != 0) ? midWidthPosition * -1 : midWidthPosition;
         startPosition.y += midWidthHeight;
@@ -73,44 +72,44 @@ public class WordsGrid : MonoBehaviour
     }
 
 
-
     private void SpawnGridSquares()
     {
         if (currentGameData != null)
         {
             var squareScale = GetSquareScale(new Vector3(1.5f, 1.5f, 0.1f));
-            foreach(var squares in currentGameData.selectedBoardData.Board)
-            { 
-                foreach(var squareLetter in squares.Row)
+            foreach (var squares in currentGameData.selectedBoardData.Board)
+            {
+                foreach (var squareLetter in squares.Row)
                 {
                     var normalLetterData = alphabetData.AlphabetNormal.Find(data => data.letter == squareLetter);
                     var selectedLetterData = alphabetData.AlphabetHighlighted.Find(data => data.letter == squareLetter);
                     var correctLetterData = alphabetData.AlphabetWrong.Find(data => data.letter == squareLetter);
 
-                    if(normalLetterData.image == null || selectedLetterData.image == null)
+                    if (normalLetterData.image == null || selectedLetterData.image == null)
                     {
                         Debug.LogError("All fields in your array should have some letters. Press Fill up with random");
-                        #if UNITY_EDITOR
+#if UNITY_EDITOR
                         if (UnityEditor.EditorApplication.isPlaying)
                         {
                             UnityEditor.EditorApplication.isPlaying = false;
                         }
-                        #endif
+#endif
                     }
                     else
                     {
                         _squareList.Add(Instantiate(gridSquarePrefab));
-                        _squareList[_squareList.Count -1].GetComponent<GridSquare>().SetSprite(normalLetterData, correctLetterData,selectedLetterData);
-                        _squareList[_squareList.Count -1].transform.SetParent(this.transform);
-                        _squareList[_squareList.Count -1].GetComponent<Transform>().position = new Vector3(0f, 0f, 0f);
-                        _squareList[_squareList.Count -1].transform.localScale = squareScale;
-                        _squareList[_squareList.Count -1].GetComponent<GridSquare>().SetIndex(_squareList.Count-1);
+                        _squareList[_squareList.Count - 1].GetComponent<GridSquare>()
+                            .SetSprite(normalLetterData, correctLetterData, selectedLetterData);
+                        _squareList[_squareList.Count - 1].transform.SetParent(this.transform);
+                        _squareList[_squareList.Count - 1].GetComponent<Transform>().position = new Vector3(0f, 0f, 0f);
+                        _squareList[_squareList.Count - 1].transform.localScale = squareScale;
+                        _squareList[_squareList.Count - 1].GetComponent<GridSquare>().SetIndex(_squareList.Count - 1);
                     }
                 }
             }
         }
-               
     }
+
     private Vector3 GetSquareScale(Vector3 defaultScale)
     {
         var finalScale = defaultScale;
@@ -121,14 +120,15 @@ public class WordsGrid : MonoBehaviour
             finalScale.x -= adjustment;
             finalScale.y -= adjustment;
 
-            if(finalScale.x <=0 || finalScale.y <= 0)
+            if (finalScale.x <= 0 || finalScale.y <= 0)
             {
                 finalScale.x = adjustment;
                 finalScale.y = adjustment;
                 return finalScale;
             }
         }
-        return finalScale; 
+
+        return finalScale;
     }
 
     private bool ShouldScaleDown(Vector3 targetScale)
@@ -147,7 +147,6 @@ public class WordsGrid : MonoBehaviour
         startPosition.y += midWidthHeight;
 
         return (startPosition.x < GetHalfScreenWidth() * -1 || startPosition.y > topPosition);
-
     }
 
     private float GetHalfScreenWidth()

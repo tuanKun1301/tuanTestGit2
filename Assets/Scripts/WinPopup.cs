@@ -6,18 +6,17 @@ using UnityEngine;
 public class WinPopup : MonoBehaviour
 {
     public GameObject winPopup;
-    
+
     void Start()
     {
         winPopup.SetActive(false);
         GameEvents.OnBoardCompleted += ShowWinPopup;
     }
 
-    
 
     private void OnDisable()
     {
-        GameEvents.OnBoardCompleted -= ShowWinPopup;  
+        GameEvents.OnBoardCompleted -= ShowWinPopup;
     }
 
     private void ShowWinPopup()

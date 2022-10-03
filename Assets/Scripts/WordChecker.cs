@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class WordChecker : MonoBehaviour
 {
     public GameData currentGameData;
     public GameLevelData gameLevelData;
-    
+
     private string _word;
 
     private int _assignedPoints = 0;
@@ -39,7 +40,7 @@ public class WordChecker : MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
-   
+
     void Start()
     {
         currentGameData.selectedBoardData.ClearData();
@@ -47,21 +48,20 @@ public class WordChecker : MonoBehaviour
         _completedWords = 0;
     }
 
-    
+
     void Update()
     {
         if (_assignedPoints > 0 && Application.isEditor)
         {
-            Debug.DrawRay(_rayUp.origin,_rayUp.direction * 4);
-            Debug.DrawRay(_rayDown.origin,_rayDown.direction * 4);
-            Debug.DrawRay(_rayLeft.origin,_rayLeft.direction * 4);
-            Debug.DrawRay(_rayRight.origin,_rayRight.direction * 4);
-            
-            Debug.DrawRay(_rayDiagonalLeftUp.origin,_rayDiagonalLeftUp.direction * 4);
-            Debug.DrawRay(_rayDiagonalLeftDown.origin,_rayDiagonalLeftDown.direction * 4);
-            Debug.DrawRay(_rayDiagonalRightUp.origin,_rayDiagonalRightUp.direction * 4);
-            Debug.DrawRay(_rayDiagonalRightDown.origin,_rayDiagonalRightDown.direction * 4);
-            
+            Debug.DrawRay(_rayUp.origin, _rayUp.direction * 4);
+            Debug.DrawRay(_rayDown.origin, _rayDown.direction * 4);
+            Debug.DrawRay(_rayLeft.origin, _rayLeft.direction * 4);
+            Debug.DrawRay(_rayRight.origin, _rayRight.direction * 4);
+
+            Debug.DrawRay(_rayDiagonalLeftUp.origin, _rayDiagonalLeftUp.direction * 4);
+            Debug.DrawRay(_rayDiagonalLeftDown.origin, _rayDiagonalLeftDown.direction * 4);
+            Debug.DrawRay(_rayDiagonalRightUp.origin, _rayDiagonalRightUp.direction * 4);
+            Debug.DrawRay(_rayDiagonalRightDown.origin, _rayDiagonalRightDown.direction * 4);
         }
     }
 
@@ -86,7 +86,7 @@ public class WordChecker : MonoBehaviour
         else if (_assignedPoints == 1)
         {
             _correctSquareList.Add(squareIndex);
-            _currentRay = SelectRay(_rayStartPosition,position);
+            _currentRay = SelectRay(_rayStartPosition, position);
             GameEvents.SelectSquareMethod(position);
             _word += letter;
             CheckWord();
@@ -101,6 +101,7 @@ public class WordChecker : MonoBehaviour
                 CheckWord();
             }
         }
+
         _assignedPoints++;
     }
 
@@ -116,9 +117,8 @@ public class WordChecker : MonoBehaviour
                 _word = string.Empty;
                 _correctSquareList.Clear();
                 CheckBoardCompleted();
-                return;           
+                return;
             }
-            
         }
     }
 
@@ -140,28 +140,28 @@ public class WordChecker : MonoBehaviour
         float tolerance = 0.01f;
         if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - 1f) < tolerance)
             return _rayUp;
-        
+
         if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
             return _rayDown;
-        
-        if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y ) < tolerance)
+
+        if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y) < tolerance)
             return _rayLeft;
-        
-        if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y ) < tolerance)
+
+        if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y) < tolerance)
             return _rayRight;
-        
+
         if (direction.x < 0f && direction.y > 0f)
             return _rayDiagonalLeftUp;
-        
+
         if (direction.x < 0f && direction.y < 0f)
             return _rayDiagonalLeftDown;
-        
+
         if (direction.x > 0f && direction.y > 0f)
             return _rayDiagonalRightUp;
-        
+
         if (direction.x > 0f && direction.y < 0f)
             return _rayDiagonalRightDown;
-        
+
         return _rayDown;
     }
 
@@ -190,7 +190,8 @@ public class WordChecker : MonoBehaviour
                     nextBoardIndex = DataSaver.ReadCategoryCurrentIndexValues(gameLevelData.data[index].categoryName);
                     readNextLevelName = false;
                 }
-                if(gameLevelData.data[index].categoryName == categoryName)
+
+                if (gameLevelData.data[index].categoryName == categoryName)
                 {
                     readNextLevelName = true;
                     currentCategoryIndex = index;
@@ -200,11 +201,11 @@ public class WordChecker : MonoBehaviour
             var currentLevelSize = gameLevelData.data[currentCategoryIndex].boardData.Count;
             if (currentBoardIndex < currentLevelSize)
             {
-                currentBoardIndex+=1;
+                currentBoardIndex += 1;
             }
-            
-            DataSaver.SaveCategoryData(categoryName,currentBoardIndex);
-            
+
+            DataSaver.SaveCategoryData(categoryName, currentBoardIndex);
+
             //unlock next category if currentBoardIndex = currentLevelSize
             if (currentBoardIndex >= currentLevelSize)
             {
@@ -216,15 +217,14 @@ public class WordChecker : MonoBehaviour
                     currentBoardIndex = 0;
                     loadNextCategory = true;
                     if (nextBoardIndex <= 0)
-                        DataSaver.SaveCategoryData(categoryName,currentBoardIndex);
-                    
+                        DataSaver.SaveCategoryData(categoryName, currentBoardIndex);
                 }
                 else
                     SceneManager.LoadScene("SelectCategory");
             }
             else
                 GameEvents.BoardCompletedMethod();
-            
+
             if (loadNextCategory)
                 GameEvents.UnlockNextCategoryMethod();
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class CountDownTimer : MonoBehaviour
 {
     public GameData currentGameData;
@@ -14,6 +15,7 @@ public class CountDownTimer : MonoBehaviour
     private float _oneSecondDown;
     private bool _timeOut;
     private bool _stopTimer;
+
     void Start()
     {
         _stopTimer = false;
@@ -47,7 +49,7 @@ public class CountDownTimer : MonoBehaviour
 
     void OnGUI()
     {
-        if(_timeOut == false)
+        if (_timeOut == false)
         {
             if (_timeLeft > 0)
             {

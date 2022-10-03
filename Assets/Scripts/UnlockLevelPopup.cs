@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UnlockLevelPopup : MonoBehaviour
 {
     [System.Serializable]
-    public struct  CategoryName
+    public struct CategoryName
     {
         public string name;
         public Sprite sprite;
@@ -17,11 +17,11 @@ public class UnlockLevelPopup : MonoBehaviour
     public List<CategoryName> categoryNames;
     public GameObject winPopup;
     public Image categoryNameImage;
+
     void Start()
     {
         winPopup.SetActive(false);
         GameEvents.OnUnlockNextCategory += OnUnlockNextCategory;
-        
     }
 
     private void OnDisable()
@@ -43,10 +43,8 @@ public class UnlockLevelPopup : MonoBehaviour
 
             if (writing.name == currentGameData.selectedCategoryName)
                 captureNext = true;
-            
         }
+
         winPopup.SetActive(true);
-            
-        
     }
 }

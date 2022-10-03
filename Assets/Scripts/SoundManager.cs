@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 [RequireComponent(typeof(AudioSource))]
 public class SoundManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance;
 
     private AudioSource _audioSource;
+
     private void Awake()
     {
         if (instance == null)
@@ -19,7 +21,6 @@ public class SoundManager : MonoBehaviour
         }
         else
             Destroy(this);
-        
     }
 
     void Start()
@@ -33,16 +34,15 @@ public class SoundManager : MonoBehaviour
         _muteBackgroundMusic = !_muteBackgroundMusic;
         if (_muteBackgroundMusic)
             _audioSource.Stop();
-        
+
         else
             _audioSource.Play();
-        
     }
 
     public void ToggleSoundFx()
     {
         _muteSoundFx = !_muteSoundFx;
-        
+
         GameEvents.ToggleSoundFxMethod();
     }
 
@@ -50,6 +50,7 @@ public class SoundManager : MonoBehaviour
     {
         return _muteBackgroundMusic;
     }
+
     public bool IsSoundFxMuted()
     {
         return _muteSoundFx;
@@ -63,8 +64,6 @@ public class SoundManager : MonoBehaviour
                 _audioSource.volume = 0f;
             else
                 _audioSource.volume = 1f;
-
         }
     }
-   
 }

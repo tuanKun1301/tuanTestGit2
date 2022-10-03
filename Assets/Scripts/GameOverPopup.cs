@@ -8,6 +8,7 @@ public class GameOverPopup : MonoBehaviour
 {
     public GameObject gameOverPopup;
     public GameObject continueGameAfterAdsButton;
+
     void Start()
     {
         continueGameAfterAdsButton.GetComponent<Button>().interactable = false;
@@ -23,9 +24,7 @@ public class GameOverPopup : MonoBehaviour
 
     private void ShowGameOverPopup()
     {
-        
         gameOverPopup.SetActive(true);
         continueGameAfterAdsButton.GetComponent<Button>().interactable = false;
-
     }
 }
