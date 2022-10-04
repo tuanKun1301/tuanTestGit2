@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class SoundToggleButton : MonoBehaviour
 {
     public enum ButtonType
@@ -20,6 +21,7 @@ public class SoundToggleButton : MonoBehaviour
 
     private Vector3 _onButtonPosition;
     private Image _image;
+
     void Start()
     {
         _image = GetComponent<Image>();

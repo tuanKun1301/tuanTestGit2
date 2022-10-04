@@ -6,6 +6,7 @@ public class GameDataSelector : MonoBehaviour
 {
     public GameData currentGameData;
     public GameLevelData levelData;
+
     void Awake()
     {
         SelectSequentalBoardData();

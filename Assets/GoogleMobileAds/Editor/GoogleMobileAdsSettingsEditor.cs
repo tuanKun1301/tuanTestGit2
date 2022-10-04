@@ -7,7 +7,6 @@ namespace GoogleMobileAds.Editor
     [CustomEditor(typeof(GoogleMobileAdsSettings))]
     public class GoogleMobileAdsSettingsEditor : UnityEditor.Editor
     {
-
         SerializedProperty _appIdAndroid;
         SerializedProperty _appIdiOS;
         SerializedProperty _delayAppMeasurement;
@@ -37,10 +36,10 @@ namespace GoogleMobileAds.Editor
 
             var settings = (GoogleMobileAdsSettings)target;
 
-            if(settings == null)
+            if (settings == null)
             {
-              UnityEngine.Debug.LogError("GoogleMobileAdsSettings is null.");
-              return;
+                UnityEngine.Debug.LogError("GoogleMobileAdsSettings is null.");
+                return;
             }
 
             EditorGUILayout.LabelField("Google Mobile Ads App ID", EditorStyles.boldLabel);
@@ -51,8 +50,8 @@ namespace GoogleMobileAds.Editor
             EditorGUILayout.PropertyField(_appIdiOS, new GUIContent("iOS"));
 
             EditorGUILayout.HelpBox(
-                    "Google Mobile Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
-                    MessageType.Info);
+                "Google Mobile Ads App ID will look similar to this sample ID: ca-app-pub-3940256099942544~3347511713",
+                MessageType.Info);
 
             EditorGUI.indentLevel--;
             EditorGUILayout.Separator();
@@ -63,20 +62,22 @@ namespace GoogleMobileAds.Editor
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(_optimizeInitialization,
-                                          new GUIContent("Optimize initialization"));
-            if (settings.OptimizeInitialization) {
+                new GUIContent("Optimize initialization"));
+            if (settings.OptimizeInitialization)
+            {
                 EditorGUILayout.HelpBox(
-                        "Initialization will be offloaded to a background thread.",
-                        MessageType.Info);
+                    "Initialization will be offloaded to a background thread.",
+                    MessageType.Info);
             }
 
             EditorGUILayout.PropertyField(_optimizeAdLoading,
-                                          new GUIContent("Optimize ad loading"));
+                new GUIContent("Optimize ad loading"));
 
-            if (settings.OptimizeAdLoading) {
+            if (settings.OptimizeAdLoading)
+            {
                 EditorGUILayout.HelpBox(
-                        "Ad loading tasks will be offloaded to a background thread.",
-                        MessageType.Info);
+                    "Ad loading tasks will be offloaded to a background thread.",
+                    MessageType.Info);
             }
 
             EditorGUI.indentLevel--;
@@ -88,12 +89,13 @@ namespace GoogleMobileAds.Editor
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(_delayAppMeasurement,
-                                          new GUIContent("Delay app measurement"));
+                new GUIContent("Delay app measurement"));
 
-            if (settings.DelayAppMeasurementInit) {
+            if (settings.DelayAppMeasurementInit)
+            {
                 EditorGUILayout.HelpBox(
-                        "Delays app measurement until you explicitly initialize the Mobile Ads SDK or load an ad.",
-                        MessageType.Info);
+                    "Delays app measurement until you explicitly initialize the Mobile Ads SDK or load an ad.",
+                    MessageType.Info);
             }
 
             EditorGUI.indentLevel--;

@@ -26,6 +26,66 @@ MonoBehaviour:
     - ' '
     - ' '
     - ' '
+    - O
+    - ' '
+  - Size: 10
+    Row:
+    - E
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - H
+    - ' '
+    - ' '
+    - H
+    - ' '
+  - Size: 10
+    Row:
+    - S
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - O
+    - ' '
+    - ' '
+    - H
+    - ' '
+  - Size: 10
+    Row:
+    - R
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - R
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+  - Size: 10
+    Row:
+    - O
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - S
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+  - Size: 10
+    Row:
+    - H
+    - ' '
+    - ' '
+    - ' '
+    - ' '
+    - E
+    - ' '
+    - ' '
     - ' '
     - ' '
   - Size: 10
@@ -62,68 +122,8 @@ MonoBehaviour:
     - ' '
     - ' '
     - ' '
-    - ' '
-    - ' '
-  - Size: 10
-    Row:
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-  - Size: 10
-    Row:
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-  - Size: 10
-    Row:
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-  - Size: 10
-    Row:
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-  - Size: 10
-    Row:
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
-    - ' '
+    - H
+    - O
   - Size: 10
     Row:
     - ' '
@@ -139,27 +139,3 @@ MonoBehaviour:
   SearchWords:
   - Found: 0
     Word: HORSE
-  - Found: 0
-    Word: FISH
-  - Found: 0
-    Word: CAT
-  - Found: 0
-    Word: DOG
-  - Found: 0
-    Word: MOUSE
-  - Found: 0
-    Word: DEER
-  - Found: 0
-    Word: WOLF
-  - Found: 0
-    Word: TIGER
-  - Found: 0
-    Word: MONKEY
-  - Found: 0
-    Word: DONKEY
-  - Found: 0
-    Word: ELEPHANT
-  - Found: 0
-    Word: DOLPHIN
-  - Found: 0
-    Word: 

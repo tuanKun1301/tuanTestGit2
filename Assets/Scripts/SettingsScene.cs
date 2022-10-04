@@ -10,6 +10,4 @@ public class SettingsScene : MonoBehaviour
     {
         DataSaver.ClearGameData(levelData);
     }
-
-    
 }

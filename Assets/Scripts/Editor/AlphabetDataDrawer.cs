@@ -31,16 +31,13 @@ public class AlphabetDataDrawer : Editor
         AlphabetHighlightedList.DoLayoutList();
         AlphabetWrongList.DoLayoutList();
         serializedObject.ApplyModifiedProperties();
-
     }
 
     private void InitializeReorderList(ref ReorderableList list, string propertyName, string listLabel)
     {
-        list = new ReorderableList(serializedObject, serializedObject.FindProperty(propertyName),true,true,true,true);
-        list.drawHeaderCallback = (Rect rect) =>
-        {
-            EditorGUI.LabelField(rect, listLabel);
-        };
+        list = new ReorderableList(serializedObject, serializedObject.FindProperty(propertyName), true, true, true,
+            true);
+        list.drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, listLabel); };
 
         var l = list;
 
@@ -58,6 +55,5 @@ public class AlphabetDataDrawer : Editor
                 new Rect(rect.x + 70, rect.y, rect.width - 60 - 30, EditorGUIUtility.singleLineHeight),
                 element.FindPropertyRelative("image"), GUIContent.none);
         };
-
     }
 }

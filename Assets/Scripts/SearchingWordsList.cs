@@ -15,7 +15,8 @@ public class SearchingWordsList : MonoBehaviour
     private int _rows;
     private int _wordsNumber;
 
-    private List<GameObject> _words = new List<GameObject>();  
+    private List<GameObject> _words = new List<GameObject>();
+
     private void Start()
     {
         _wordsNumber = currentGameData.selectedBoardData.SearchWords.Count;
@@ -23,7 +24,7 @@ public class SearchingWordsList : MonoBehaviour
             _rows = 1;
         else
             CalculateColumnsAndRowsNumber();
-        
+
         CreateWordObjects();
         SetWordsPosition();
     }
@@ -61,7 +62,6 @@ public class SearchingWordsList : MonoBehaviour
 
     private void CreateWordObjects()
     {
-        
         var squareScale = GetSquareScale(new Vector3(1f, 1f, 0.1f));
         for (var index = 0; index < _wordsNumber; index++)
         {
@@ -69,7 +69,8 @@ public class SearchingWordsList : MonoBehaviour
             _words[index].transform.SetParent(this.transform);
             _words[index].GetComponent<RectTransform>().localScale = squareScale;
             _words[index].GetComponent<RectTransform>().localPosition = new Vector3(0f, 0f, 0f);
-            _words[index].GetComponent<SearchingWord>().SetWord(currentGameData.selectedBoardData.SearchWords[index].Word);
+            _words[index].GetComponent<SearchingWord>()
+                .SetWord(currentGameData.selectedBoardData.SearchWords[index].Word);
         }
     }
 
@@ -117,14 +118,12 @@ public class SearchingWordsList : MonoBehaviour
         var totalSquareWidth = squareSize.x * _columns;
         if (totalSquareWidth > parentRect.rect.width)
             return true;
-        
+
         return false;
     }
 
     private void SetWordsPosition()
     {
-        
-        
         var squareRect = _words[0].GetComponent<RectTransform>();
         var wordOffset = new Vector2
         {
@@ -166,5 +165,4 @@ public class SearchingWordsList : MonoBehaviour
         startPosition.y = (parentRect.rect.height - squareSize.y) / 2;
         return startPosition;
     }
-    
 }

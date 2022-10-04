@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameUtility : MonoBehaviour
 {
-    public void LoadScene (string sceneName)
+    public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
@@ -14,6 +14,7 @@ public class GameUtility : MonoBehaviour
     {
         SoundManager.instance.ToggleBackgroundMusic();
     }
+
     public void MuteToggleSoundFx()
     {
         SoundManager.instance.ToggleSoundFx();

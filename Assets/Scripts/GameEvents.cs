@@ -5,141 +5,140 @@ using UnityEngine;
 
 public static class GameEvents
 {
-   public delegate void EnableSquareSelection();
+    public delegate void EnableSquareSelection();
 
-   public static event EnableSquareSelection OnEnableSquareSelection;
+    public static event EnableSquareSelection OnEnableSquareSelection;
 
-   public static void EnableSquareSelectionMethod()
-   {
-      if (OnEnableSquareSelection != null)
-      {
-         OnEnableSquareSelection();
-      }
-   }
+    public static void EnableSquareSelectionMethod()
+    {
+        if (OnEnableSquareSelection != null)
+        {
+            OnEnableSquareSelection();
+        }
+    }
 
-   public delegate void DisableSquareSelection();
+    public delegate void DisableSquareSelection();
 
-   public static event DisableSquareSelection OnDisableSquareSelection;
+    public static event DisableSquareSelection OnDisableSquareSelection;
 
-   public static void DisableSquareSelectionMethod()
-   {
-      if (OnDisableSquareSelection != null)
-      {
-         OnDisableSquareSelection();
-      }  
-   }
-   
-   public delegate void SelectSquare(Vector3 position);
+    public static void DisableSquareSelectionMethod()
+    {
+        if (OnDisableSquareSelection != null)
+        {
+            OnDisableSquareSelection();
+        }
+    }
 
-   public static event SelectSquare OnSelectSquare;
+    public delegate void SelectSquare(Vector3 position);
 
-   public static void SelectSquareMethod(Vector3 position)
-   {
-      if (OnSelectSquare != null)
-      {
-         OnSelectSquare(position);
-      }  
-   }
-   
-   
-   public delegate void CheckSquare(String letter, Vector3 position, int squareIndex);
+    public static event SelectSquare OnSelectSquare;
 
-   public static event CheckSquare OnCheckSquare;
+    public static void SelectSquareMethod(Vector3 position)
+    {
+        if (OnSelectSquare != null)
+        {
+            OnSelectSquare(position);
+        }
+    }
 
-   public static void CheckSquareMethod(String letter, Vector3 position, int squareIndex)
-   {
-      if (OnCheckSquare != null)
-      {
-         OnCheckSquare(letter,position,squareIndex);
-      }  
-   }
-   
-   public delegate void ClearSelection();
 
-   public static event ClearSelection OnClearSelection;
+    public delegate void CheckSquare(String letter, Vector3 position, int squareIndex);
 
-   public static void ClearSelectionMethod()
-   {
-      if (OnClearSelection != null)
-      {
-         OnClearSelection();
-      }  
-   }
+    public static event CheckSquare OnCheckSquare;
 
-   public delegate void CorrectWord(string word, List<int> squareIndexes);
+    public static void CheckSquareMethod(String letter, Vector3 position, int squareIndex)
+    {
+        if (OnCheckSquare != null)
+        {
+            OnCheckSquare(letter, position, squareIndex);
+        }
+    }
 
-   public static event CorrectWord OnCorrectWord;
+    public delegate void ClearSelection();
 
-   public static void CorrectWordMethod(string word, List<int> squareIndexes)
-   {
-      if (OnCorrectWord != null)
-      {
-         OnCorrectWord(word, squareIndexes);
-      }
-   }
-   
-   
-   public delegate void BoardCompleted();
+    public static event ClearSelection OnClearSelection;
 
-   public static event BoardCompleted OnBoardCompleted;
+    public static void ClearSelectionMethod()
+    {
+        if (OnClearSelection != null)
+        {
+            OnClearSelection();
+        }
+    }
 
-   public static void BoardCompletedMethod()
-   {
-      if (OnBoardCompleted != null)
-      {
-         OnBoardCompleted();
-      }
-   }
-   
-   public delegate void UnlockNextCategory();
+    public delegate void CorrectWord(string word, List<int> squareIndexes);
 
-   public static event UnlockNextCategory OnUnlockNextCategory;
+    public static event CorrectWord OnCorrectWord;
 
-   public static void UnlockNextCategoryMethod()
-   {
-      if (OnUnlockNextCategory != null)
-      {
-         OnUnlockNextCategory();
-      }
-   }
-   
-   public delegate void LoadNextLevel();
+    public static void CorrectWordMethod(string word, List<int> squareIndexes)
+    {
+        if (OnCorrectWord != null)
+        {
+            OnCorrectWord(word, squareIndexes);
+        }
+    }
 
-   public static event LoadNextLevel OnLoadNextLevel;
 
-   public static void LoadNextLevelMethod()
-   {
-      int i = 0;
-      if (OnLoadNextLevel != null)
-      {
-         OnLoadNextLevel();
-      }
-   }
-   
-   
-   public delegate void GamOver();
+    public delegate void BoardCompleted();
 
-   public static event GamOver OnGamOver;
+    public static event BoardCompleted OnBoardCompleted;
 
-   public static void GamOverMethod()
-   {
-      if (OnGamOver != null)
-      {
-         OnGamOver();
-      }
-   }
-   
-   
-   public delegate void ToggleSoundFx();
+    public static void BoardCompletedMethod()
+    {
+        if (OnBoardCompleted != null)
+        {
+            OnBoardCompleted();
+        }
+    }
 
-   public static event ToggleSoundFx OnToggleSoundFx;
+    public delegate void UnlockNextCategory();
 
-   public static void ToggleSoundFxMethod()
-   {
-      if (OnToggleSoundFx != null)
-      {
-         OnToggleSoundFx();
-      }
-   }
+    public static event UnlockNextCategory OnUnlockNextCategory;
 
+    public static void UnlockNextCategoryMethod()
+    {
+        if (OnUnlockNextCategory != null)
+        {
+            OnUnlockNextCategory();
+        }
+    }
+
+    public delegate void LoadNextLevel();
+
+    public static event LoadNextLevel OnLoadNextLevel;
+
+    public static void LoadNextLevelMethod()
+    {
+        int i = 0;
+        if (OnLoadNextLevel != null)
+        {
+            OnLoadNextLevel();
+        }
+    }
+
+
+    public delegate void GamOver();
+
+    public static event GamOver OnGamOver;
+
+    public static void GamOverMethod()
+    {
+        if (OnGamOver != null)
+        {
+            OnGamOver();
+        }
+    }
+
+
+    public delegate void ToggleSoundFx();
+
+    public static event ToggleSoundFx OnToggleSoundFx;
+
+    public static void ToggleSoundFxMethod()
+    {
+        if (OnToggleSoundFx != null)
+        {
+            OnToggleSoundFx();
+        }
+    }
 }

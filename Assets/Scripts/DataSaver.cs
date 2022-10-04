@@ -1,10 +1,10 @@
- using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DataSaver : MonoBehaviour
 {
-    public static int ReadCategoryCurrentIndexValues (string name)
+    public static int ReadCategoryCurrentIndexValues(string name)
     {
         var value = -1;
         if (PlayerPrefs.HasKey(name))
@@ -15,7 +15,7 @@ public class DataSaver : MonoBehaviour
 
     public static void SaveCategoryData(string categoryName, int currentIndex)
     {
-        PlayerPrefs.SetInt(categoryName,currentIndex);
+        PlayerPrefs.SetInt(categoryName, currentIndex);
         PlayerPrefs.Save();
     }
 
@@ -25,9 +25,9 @@ public class DataSaver : MonoBehaviour
         {
             PlayerPrefs.SetInt(data.categoryName, -1);
         }
+
         //unlock first level
-        PlayerPrefs.SetInt(levelData.data[0].categoryName,0);
+        PlayerPrefs.SetInt(levelData.data[0].categoryName, 0);
         PlayerPrefs.Save();
     }
-    
 }

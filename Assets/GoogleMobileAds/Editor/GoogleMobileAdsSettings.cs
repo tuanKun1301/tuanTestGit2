@@ -32,20 +32,15 @@ namespace GoogleMobileAds.Editor
             return instance;
         }
 
-        [SerializeField]
-        private string adMobAndroidAppId = string.Empty;
+        [SerializeField] private string adMobAndroidAppId = string.Empty;
 
-        [SerializeField]
-        private string adMobIOSAppId = string.Empty;
+        [SerializeField] private string adMobIOSAppId = string.Empty;
 
-        [SerializeField]
-        private bool delayAppMeasurementInit;
+        [SerializeField] private bool delayAppMeasurementInit;
 
-        [SerializeField]
-        private bool optimizeInitialization;
+        [SerializeField] private bool optimizeInitialization;
 
-        [SerializeField]
-        private bool optimizeAdLoading;
+        [SerializeField] private bool optimizeAdLoading;
 
         public string GoogleMobileAdsAndroidAppId
         {

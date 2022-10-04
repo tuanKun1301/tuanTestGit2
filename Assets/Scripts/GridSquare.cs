@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GridSquare : MonoBehaviour
 {
-    public int SquareIndex{ get;set; }
+    public int SquareIndex { get; set; }
     private AlphabetData.LetterData _normalLetterData;
     private AlphabetData.LetterData _selectedLetterData;
     private AlphabetData.LetterData _correctLetterData;
@@ -28,7 +28,7 @@ public class GridSquare : MonoBehaviour
     {
         return _index;
     }
-    
+
     void Start()
     {
         _selected = false;
@@ -45,7 +45,7 @@ public class GridSquare : MonoBehaviour
         GameEvents.OnSelectSquare += SelectSquare;
         GameEvents.OnCorrectWord += CorrectWord;
     }
-    
+
     private void OnDisable()
     {
         GameEvents.OnEnableSquareSelection -= OnEnableSquareSelection;
@@ -65,6 +65,7 @@ public class GridSquare : MonoBehaviour
         _selected = false;
         _clicked = false;
     }
+
     public void OnEnableSquareSelection()
     {
         _clicked = true;
@@ -78,20 +79,17 @@ public class GridSquare : MonoBehaviour
         if (_correct == true)
             _displayedImage.sprite = _correctLetterData.image;
         else
-            _displayedImage.sprite = _normalLetterData.image; 
-
-
+            _displayedImage.sprite = _normalLetterData.image;
     }
-    
+
     private void SelectSquare(Vector3 position)
     {
         if (this.gameObject.transform.position == position)
             _displayedImage.sprite = _selectedLetterData.image;
-
-
     }
 
-    public void SetSprite(AlphabetData.LetterData normalLetterData, AlphabetData.LetterData selectedLetterData, AlphabetData.LetterData correctLetterData)
+    public void SetSprite(AlphabetData.LetterData normalLetterData, AlphabetData.LetterData selectedLetterData,
+        AlphabetData.LetterData correctLetterData)
     {
         _normalLetterData = normalLetterData;
         _selectedLetterData = selectedLetterData;
@@ -127,10 +125,9 @@ public class GridSquare : MonoBehaviour
             {
                 _source.Play();
             }
+
             _selected = true;
             GameEvents.CheckSquareMethod(_normalLetterData.letter, gameObject.transform.position, _index);
         }
     }
-    
-    
 }
