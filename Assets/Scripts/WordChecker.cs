@@ -88,6 +88,7 @@ public class WordChecker : MonoBehaviour
             _correctSquareList.Add(squareIndex);
             _currentRay = SelectRay(_rayStartPosition, position);
             GameEvents.SelectSquareMethod(position);
+            Debug.Log($"test 1:({Input.mousePosition.x}, {Input.mousePosition.y})");
             _word += letter;
             CheckWord();
         }
@@ -95,6 +96,7 @@ public class WordChecker : MonoBehaviour
         {
             if (IsPointOnTheRay(_currentRay, position))
             {
+                Debug.Log("test 2:");
                 _correctSquareList.Add(squareIndex);
                 GameEvents.SelectSquareMethod(position);
                 _word += letter;

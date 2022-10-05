@@ -45,7 +45,7 @@ public class WordsGrid : MonoBehaviour
 
             var positionX = startPosition.x + offset.x * columnNumber;
             var positionY = startPosition.y - offset.y * rowNumber;
-
+            Debug.Log($"position: ({positionX}, {positionY})");
             square.GetComponent<Transform>().position = new Vector2(positionX, positionY);
             rowNumber++;
         }
