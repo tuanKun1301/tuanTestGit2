@@ -45,7 +45,7 @@ MonoBehaviour:
     - 
     - 
     - 
-    - H
+    - 
     - 
     - 
     - 
@@ -58,7 +58,7 @@ MonoBehaviour:
     - 
     - 
     - 
-    - O
+    - 
     - 
     - 
     - 
@@ -71,7 +71,7 @@ MonoBehaviour:
     - 
     - 
     - 
-    - R
+    - 
     - 
     - 
     - 
@@ -84,7 +84,7 @@ MonoBehaviour:
     - 
     - 
     - 
-    - S
+    - 
     - 
     - 
     - 
@@ -97,7 +97,7 @@ MonoBehaviour:
     - 
     - 
     - 
-    - E
+    - 
     - 
     - 
   - Size: 10
@@ -143,3 +143,9 @@ MonoBehaviour:
     Word: WOLF
   - Found: 0
     Word: FISH
+  - Found: 0
+    Word: cat
+  - Found: 0
+    Word: dolphin
+  - Found: 0
+    Word: elephant

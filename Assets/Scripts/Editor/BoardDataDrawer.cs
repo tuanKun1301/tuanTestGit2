@@ -215,37 +215,7 @@ public class BoardDataDrawer : Editor
         //var listWord = _dataList.li;
         if (GUILayout.Button("Auto Fill Words"))
         {
-            var listSearchWords = GameDataInstance.SearchWords;
-            List<BoardData.Ray> drawableList = new List<BoardData.Ray>();
-            
-            
-            int x = 0;
-            if (listSearchWords != null)
-            {
-                foreach (var data in listSearchWords)
-                {
-                    //get letter of words
-                    var randomColumn = UnityEngine.Random.Range(0, GameDataInstance.Columns - 1);
-                    var randomRow = UnityEngine.Random.Range(0, GameDataInstance.Rows - 1);
-                    var word = data.Word.ToUpper().ToCharArray();
-                    //CheckWord(BoardData.Ray.RayUp, word, 0, 5);
-                    
-                    RayCheck(randomColumn, randomRow, word);
-                    
-                    int i =listDrawableRays.Count;
-                    if (listDrawableRays.Count > 0)
-                    {
-                        int index = Random.Range(0, listDrawableRays.Count);
-                        //Debug.Log($"random ray: {listDrawableRays[index]}");
-                        
-                        
-                        //if(index < listDrawableRays.Count)
-                            DrawWord(listDrawableRays[index], word, randomColumn, randomRow);
-                            listDrawableRays.Clear();
-                    }
-                    //
-                }
-            }
+            DrawWordWithRandom();
         }
     }
 
@@ -538,6 +508,52 @@ public class BoardDataDrawer : Editor
 
                 break;
         }
-        ConvertToUpperButton();
+        
+    }
+
+    public void DrawWordWithRandom()
+    {
+        var listSearchWords = GameDataInstance.SearchWords;   
+        
+        if (listSearchWords != null)
+        {
+            
+            for(int i =0; i< listSearchWords.Count; i++)
+            {
+                //get letter of words
+                var randomColumn = Random.Range(0, GameDataInstance.Columns - 1);
+                var randomRow = Random.Range(0, GameDataInstance.Rows - 1);
+                var word = listSearchWords[i].Word.ToUpper().ToCharArray();
+                //CheckWord(BoardData.Ray.RayUp, word, 0, 5);
+                    
+                RayCheck(randomColumn, randomRow, word);
+
+                if (listDrawableRays.Count > 0)
+                {
+                    int index = Random.Range(0, listDrawableRays.Count);
+                    //Debug.Log($"random ray: {listDrawableRays[index]}");
+                        
+                        
+                    //if(index < listDrawableRays.Count)
+                    DrawWord(listDrawableRays[index], word, randomColumn, randomRow);
+                    listDrawableRays.Clear();
+                }
+                else
+                {
+                    RayCheck(Random.Range(0, GameDataInstance.Columns - 1),
+                        Random.Range(0, GameDataInstance.Rows - 1), word);
+                    i--;
+                }
+                //
+            }
+            foreach (var searchWord in GameDataInstance.SearchWords)
+            {
+                var errorCounter = Regex.Matches(searchWord.Word, @"[a-z]").Count;
+                if (errorCounter > 0)
+                {
+                    searchWord.Word = searchWord.Word.ToUpper();
+                }
+            }
+        }
     }
 }
