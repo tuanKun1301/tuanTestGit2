@@ -103,11 +103,13 @@ public class GridSquare : MonoBehaviour
         OnEnableSquareSelection();
         GameEvents.EnableSquareSelectionMethod();
         CheckSquare();
+        Debug.Log($"mouse down here: {gameObject.transform.position}");
         _displayedImage.sprite = _selectedLetterData.image;
     }
 
     private void OnMouseEnter()
     {
+        Debug.Log($"mouse enter here: {gameObject.transform.position}");
         CheckSquare();
     }
 

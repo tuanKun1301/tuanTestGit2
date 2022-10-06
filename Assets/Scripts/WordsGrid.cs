@@ -45,7 +45,7 @@ public class WordsGrid : MonoBehaviour
 
             var positionX = startPosition.x + offset.x * columnNumber;
             var positionY = startPosition.y - offset.y * rowNumber;
-
+            Debug.Log($"position: ({positionX}, {positionY})");
             square.GetComponent<Transform>().position = new Vector2(positionX, positionY);
             rowNumber++;
         }
@@ -99,7 +99,7 @@ public class WordsGrid : MonoBehaviour
                     {
                         _squareList.Add(Instantiate(gridSquarePrefab));
                         _squareList[_squareList.Count - 1].GetComponent<GridSquare>()
-                            .SetSprite(normalLetterData, correctLetterData, selectedLetterData);
+                            .SetSprite(normalLetterData, correctLetterData, selectedLetterData);/*set sprite*/
                         _squareList[_squareList.Count - 1].transform.SetParent(this.transform);
                         _squareList[_squareList.Count - 1].GetComponent<Transform>().position = new Vector3(0f, 0f, 0f);
                         _squareList[_squareList.Count - 1].transform.localScale = squareScale;

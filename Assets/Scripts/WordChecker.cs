@@ -88,6 +88,7 @@ public class WordChecker : MonoBehaviour
             _correctSquareList.Add(squareIndex);
             _currentRay = SelectRay(_rayStartPosition, position);
             GameEvents.SelectSquareMethod(position);
+            //Debug.Log($"test 1:({Input.mousePosition.x}, {Input.mousePosition.y})");
             _word += letter;
             CheckWord();
         }
@@ -95,6 +96,7 @@ public class WordChecker : MonoBehaviour
         {
             if (IsPointOnTheRay(_currentRay, position))
             {
+                //Debug.Log("test 2:");
                 _correctSquareList.Add(squareIndex);
                 GameEvents.SelectSquareMethod(position);
                 _word += letter;
@@ -136,32 +138,36 @@ public class WordChecker : MonoBehaviour
 
     private Ray SelectRay(Vector2 firstPosition, Vector2 secondPosition)
     {
+        //Debug.Log($"Old position: {firstPosition} - new position: {secondPosition}");
         var direction = (secondPosition - firstPosition).normalized;
+        var firstDirection = (secondPosition + firstPosition).normalized;
+        var secondDirection = (secondPosition + firstPosition).normalized;
         float tolerance = 0.01f;
         if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - 1f) < tolerance)
             return _rayUp;
-
-        if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
+        
+        if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y + 1f) < tolerance)
             return _rayDown;
-
-        if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y) < tolerance)
+        
+        if (Math.Abs(direction.x + 1f) < tolerance && Math.Abs(direction.y) < tolerance)
             return _rayLeft;
-
+        
         if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y) < tolerance)
             return _rayRight;
-
+        
         if (direction.x < 0f && direction.y > 0f)
             return _rayDiagonalLeftUp;
-
+        
         if (direction.x < 0f && direction.y < 0f)
             return _rayDiagonalLeftDown;
-
+        
         if (direction.x > 0f && direction.y > 0f)
             return _rayDiagonalRightUp;
-
+        
         if (direction.x > 0f && direction.y < 0f)
             return _rayDiagonalRightDown;
-
+        
+        
         return _rayDown;
     }
 
