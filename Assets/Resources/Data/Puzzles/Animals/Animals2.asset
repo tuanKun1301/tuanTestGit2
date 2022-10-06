@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d51475507f8b4ddf97728296cf71ecf, type: 3}
-  m_Name: Sport1
+  m_Name: Animals2
   m_EditorClassIdentifier: 
   timeInSeconds: 120
   Columns: 10
@@ -18,136 +18,134 @@ MonoBehaviour:
   Board:
   - Size: 10
     Row:
-    - S
-    - K
-    - A
-    - V
-    - B
-    - B
-    - N
-    - S
-    - J
-    - V
-  - Size: 10
-    Row:
-    - W
-    - J
-    - W
-    - S
-    - A
-    - E
-    - O
-    - I
-    - F
-    - L
-  - Size: 10
-    Row:
-    - I
-    - Y
-    - C
-    - L
-    - S
-    - T
-    - T
-    - N
-    - O
-    - L
-  - Size: 10
-    Row:
-    - M
-    - D
-    - Z
     - G
-    - K
-    - A
-    - N
-    - N
-    - O
-    - O
-  - Size: 10
-    Row:
-    - M
-    - O
-    - I
-    - F
-    - E
-    - R
-    - I
-    - E
-    - T
-    - A
-  - Size: 10
-    Row:
-    - I
-    - S
-    - N
-    - D
-    - T
-    - A
-    - M
-    - T
-    - B
-    - R
-  - Size: 10
-    Row:
-    - N
-    - T
-    - N
-    - I
-    - B
-    - K
-    - D
-    - M
-    - A
-    - H
-  - Size: 10
-    Row:
-    - G
-    - O
-    - L
-    - F
-    - A
-    - S
-    - A
-    - J
-    - L
-    - Q
-  - Size: 10
-    Row:
-    - B
-    - P
-    - S
-    - N
-    - L
-    - N
-    - B
-    - W
-    - L
     - X
+    - G
+    - S
+    - Z
+    - E
+    - B
+    - R
+    - A
+    - Z
   - Size: 10
     Row:
-    - L
-    - D
-    - B
-    - E
-    - L
+    - I
+    - N
+    - U
+    - Q
+    - U
     - O
+    - B
+    - L
+    - W
+    - M
+  - Size: 10
+    Row:
+    - G
+    - W
+    - X
+    - J
+    - W
+    - U
+    - T
+    - O
+    - V
+    - O
+  - Size: 10
+    Row:
+    - R
+    - R
+    - N
+    - I
+    - U
+    - G
+    - N
+    - E
+    - P
+    - K
+  - Size: 10
+    Row:
+    - A
+    - O
+    - O
+    - R
+    - A
+    - G
+    - N
+    - A
+    - K
+    - I
+  - Size: 10
+    Row:
     - F
     - R
+    - B
+    - U
+    - F
+    - F
+    - A
+    - L
+    - O
+    - T
+  - Size: 10
+    Row:
+    - F
+    - H
+    - X
+    - W
+    - A
+    - D
+    - N
+    - A
+    - P
+    - K
+  - Size: 10
+    Row:
     - E
+    - K
+    - N
+    - B
+    - Q
+    - J
+    - R
+    - I
+    - T
+    - V
+  - Size: 10
+    Row:
+    - U
+    - C
+    - Y
+    - W
+    - B
+    - H
+    - Y
+    - X
+    - T
+    - K
+  - Size: 10
+    Row:
+    - I
+    - A
+    - E
+    - V
+    - Y
+    - K
+    - P
+    - U
+    - X
     - F
   SearchWords:
   - Found: 0
-    Word: BASKETBALL
+    Word: GIGRAFFE
   - Found: 0
-    Word: FOOTBALL
+    Word: PANDA
   - Found: 0
-    Word: TENNIS
+    Word: PENGUIN
   - Found: 0
-    Word: GOLF
+    Word: KANGAROO
   - Found: 0
-    Word: BADMINTON
+    Word: BUFFALO
   - Found: 0
-    Word: KARATE
-  - Found: 0
-    Word: SWIMMING
+    Word: ZEBRA

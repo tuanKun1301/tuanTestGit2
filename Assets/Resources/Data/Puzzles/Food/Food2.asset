@@ -18,41 +18,45 @@ MonoBehaviour:
   Board:
   - Size: 5
     Row:
+    - M
     - C
-    - G
-    - X
-    - R
-    - B
-  - Size: 5
-    Row:
-    - G
-    - A
-    - E
-    - T
-    - A
-  - Size: 5
-    Row:
-    - A
-    - L
-    - N
-    - G
+    - Y
+    - D
     - H
   - Size: 5
     Row:
-    - Z
-    - F
-    - O
-    - D
+    - I
+    - A
     - G
+    - A
+    - K
   - Size: 5
     Row:
-    - M
-    - I
     - L
+    - N
+    - G
+    - E
+    - W
+  - Size: 5
+    Row:
     - K
+    - D
+    - E
+    - T
+    - N
+  - Size: 5
+    Row:
+    - T
     - Y
+    - H
+    - O
+    - B
   SearchWords:
-  - Word: CANDY
-  - Word: EGG
-  - Word: MILK
-  - Word: TEA
+  - Found: 1
+    Word: CANDY
+  - Found: 1
+    Word: EGG
+  - Found: 1
+    Word: MILK
+  - Found: 1
+    Word: TEA
