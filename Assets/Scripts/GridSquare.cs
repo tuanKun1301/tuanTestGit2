@@ -18,7 +18,7 @@ public class GridSquare : MonoBehaviour
     private bool _correct;
 
     private AudioSource _source;
-
+    
     public void SetIndex(int index)
     {
         _index = index;
@@ -36,6 +36,11 @@ public class GridSquare : MonoBehaviour
         _correct = false;
         _displayedImage = GetComponent<SpriteRenderer>();
         _source = GetComponent<AudioSource>();
+    }
+
+    void Update()
+    {
+        
     }
 
     private void OnEnable()
@@ -61,7 +66,6 @@ public class GridSquare : MonoBehaviour
             _correct = true;
             _displayedImage.sprite = _correctLetterData.image;
         }
-
         _selected = false;
         _clicked = false;
     }
@@ -103,18 +107,17 @@ public class GridSquare : MonoBehaviour
         OnEnableSquareSelection();
         GameEvents.EnableSquareSelectionMethod();
         CheckSquare();
-        Debug.Log($"mouse down here: {gameObject.transform.position}");
         _displayedImage.sprite = _selectedLetterData.image;
     }
-
     private void OnMouseEnter()
     {
-        Debug.Log($"mouse enter here: {gameObject.transform.position}");
+        //Debug.Log($"mouse enter here: {gameObject.transform.position}");
         CheckSquare();
     }
 
     private void OnMouseUp()
     {
+        //Debug.Log($"pos:{gameObject.transform.position}");
         GameEvents.ClearSelectionMethod();
         GameEvents.DisableSquareSelectionMethod();
     }
@@ -123,6 +126,7 @@ public class GridSquare : MonoBehaviour
     {
         if (_selected == false && _clicked == true)
         {
+            // play sound
             if (SoundManager.instance.IsSoundFxMuted() == false)
             {
                 _source.Play();
@@ -130,6 +134,62 @@ public class GridSquare : MonoBehaviour
 
             _selected = true;
             GameEvents.CheckSquareMethod(_normalLetterData.letter, gameObject.transform.position, _index);
+        }
+    }
+
+    
+    private Vector3 mousePosition;
+    private Vector3 position = new Vector3(0f, 0f,0f);
+    
+    public BoardData.Ray PredictionRay(Vector2 firstPosition, Vector2 secondPosition)
+    {
+        int a = 0;
+        if (firstPosition != secondPosition)
+        {
+            //Debug.Log($"first pos:{firstPosition} --- second pos:{secondPosition}");
+            var direction = secondPosition - firstPosition;
+            Debug.Log($"direction: {direction}");
+            if (direction.x > 0 && direction.y == 0)
+            {
+                return BoardData.Ray.RayRight;
+            }
+            if (direction.x < 0 && direction.y == 0)
+            {
+                return BoardData.Ray.RayLeft;
+            }
+            if (direction.x == 0 && direction.y < 0)
+            {
+                return BoardData.Ray.RayUp;
+            }
+            if (direction.x == 0 && direction.y > 0)
+            {
+                return BoardData.Ray.RayDown;
+            }
+            if (direction.x > 0 && direction.y > 0 && direction.x == direction.y)
+            {
+                return BoardData.Ray.RayDiagonalRightDown;
+            }
+            if (direction.x < 0 && direction.y > 0 && direction.x == direction.y)
+            {
+                return BoardData.Ray.RayDiagonalLeftDown;
+            }
+            if (direction.x > 0 && direction.y < 0 && direction.x == direction.y)
+            {
+                return BoardData.Ray.RayDiagonalRightUp;
+            }
+            if (direction.x < 0 && direction.y < 0 && direction.x == direction.y)
+            {
+                return BoardData.Ray.RayDiagonalLeftUp;
+            }
+        }
+
+        return BoardData.Ray.RayDown;
+    }
+
+    public void DrawWordInPrediction(BoardData.Ray ray)
+    {
+        switch (ray)
+        {
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,25 @@ public class WordsGrid : MonoBehaviour
     {
         SpawnGridSquares();
         SetSquarePosition();
+    }
+
+    private Vector2 firstMousePosition;
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            firstMousePosition = gameObject.transform.position;
+            //Debug.Log($"first pos:{Input.mousePosition} ");
+        }
+        // else if (Input.GetMouseButtonUp(0))
+        // {
+        //     secondMousePosition = gameObject.transform.position;
+        //     //Debug.Log($"second pos:{Input.mousePosition}");
+        // }
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log($"pos:{firstMousePosition} -- {gameObject.transform.position} ");
+        }
     }
 
     private void SetSquarePosition()
@@ -45,7 +65,7 @@ public class WordsGrid : MonoBehaviour
 
             var positionX = startPosition.x + offset.x * columnNumber;
             var positionY = startPosition.y - offset.y * rowNumber;
-            Debug.Log($"position: ({positionX}, {positionY})");
+            //Debug.Log($"position: ({positionX}, {positionY})");
             square.GetComponent<Transform>().position = new Vector2(positionX, positionY);
             rowNumber++;
         }

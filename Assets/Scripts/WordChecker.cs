@@ -21,6 +21,8 @@ public class WordChecker : MonoBehaviour
     private Vector3 _rayStartPosition;
     private List<int> _correctSquareList = new List<int>();
 
+    private Vector2 firstMousePosition;
+    private Vector2 secondMousePosition;
     private void OnEnable()
     {
         GameEvents.OnCheckSquare += SquareSelected;
@@ -63,6 +65,8 @@ public class WordChecker : MonoBehaviour
             Debug.DrawRay(_rayDiagonalRightUp.origin, _rayDiagonalRightUp.direction * 4);
             Debug.DrawRay(_rayDiagonalRightDown.origin, _rayDiagonalRightDown.direction * 4);
         }
+        
+        
     }
 
     private void SquareSelected(string letter, Vector3 position, int squareIndex)
@@ -166,7 +170,6 @@ public class WordChecker : MonoBehaviour
         
         if (direction.x > 0f && direction.y < 0f)
             return _rayDiagonalRightDown;
-        
         
         return _rayDown;
     }
