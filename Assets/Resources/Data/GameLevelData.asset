@@ -21,9 +21,12 @@ MonoBehaviour:
   - categoryName: Animals
     boardData:
     - {fileID: 11400000, guid: a689ec85e9da4459a8f9916ebcee00a9, type: 2}
+    - {fileID: 11400000, guid: 0063b25990796417da3c2dc1acbd5167, type: 2}
+    - {fileID: 11400000, guid: 3f1d20cb2baa445268536ee012da517e, type: 2}
   - categoryName: Sport
     boardData:
     - {fileID: 11400000, guid: d1fe6fb3aeecd479080478175003c65e, type: 2}
+    - {fileID: 11400000, guid: dd42c26fea5424834b6e5349d164df03, type: 2}
   - categoryName: Hobbies
     boardData:
     - {fileID: 11400000, guid: a6f9088cd5c23405b833b06e74972e69, type: 2}

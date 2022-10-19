@@ -31,21 +31,25 @@ public class BoardDataDrawer : Editor
             EditorGUILayout.FloatField("Max Game Time (in Seconds)", GameDataInstance.timeInSeconds);
         DrawColumnsRowsInputFields();
         EditorGUILayout.Space();
-        ConvertToUpperButton();
+        if (GUILayout.Button("To Upper"))
+            ConvertToUpperButton();
 
         if (GameDataInstance.Board != null && GameDataInstance.Columns > 0 && GameDataInstance.Rows > 0)
             DrawBoardTable();
 
         GUILayout.BeginHorizontal();
-        ClearBoardButton();
-        FillUpWithRandomLettersButton();
+        if (GUILayout.Button("Clear Board"))
+            ClearBoardButton();
+        if (GUILayout.Button("Fill Up With Random"))
+            FillUpWithRandomLettersButton();
         GUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
         _dataList.DoLayoutList();
 
         GUILayout.BeginHorizontal();
-        AutoFillRandomWord();
+        if (GUILayout.Button("Auto Fill Words"))
+            AutoFillRandomWord();
         GUILayout.EndHorizontal();
 
         serializedObject.ApplyModifiedProperties();
@@ -146,222 +150,401 @@ public class BoardDataDrawer : Editor
 
     private void ConvertToUpperButton()
     {
-        if (GUILayout.Button("To Upper"))
+        for (var i = 0; i < GameDataInstance.Columns; i++)
         {
-            for (var i = 0; i < GameDataInstance.Columns; i++)
+            for (var j = 0; j < GameDataInstance.Rows; j++)
             {
-                for (var j = 0; j < GameDataInstance.Rows; j++)
-                {
-                    var errorCounter = Regex.Matches(GameDataInstance.Board[i].Row[j], @"[a-z]").Count;
+                var errorCounter = Regex.Matches(GameDataInstance.Board[i].Row[j], @"[a-z]").Count;
 
-                    if (errorCounter > 0)
-                    {
-                        GameDataInstance.Board[i].Row[j] = GameDataInstance.Board[i].Row[j].ToUpper();
-                    }
-                }
-            }
-
-            foreach (var searchWord in GameDataInstance.SearchWords)
-            {
-                var errorCounter = Regex.Matches(searchWord.Word, @"[a-z]").Count;
                 if (errorCounter > 0)
                 {
-                    searchWord.Word = searchWord.Word.ToUpper();
+                    GameDataInstance.Board[i].Row[j] = GameDataInstance.Board[i].Row[j].ToUpper();
                 }
+            }
+        }
+
+        foreach (var searchWord in GameDataInstance.SearchWords)
+        {
+            var errorCounter = Regex.Matches(searchWord.Word, @"[a-z]").Count;
+            if (errorCounter > 0)
+            {
+                searchWord.Word = searchWord.Word.ToUpper();
             }
         }
     }
 
     private void ClearBoardButton()
     {
-        if (GUILayout.Button("Clear Board"))
+        for (int i = 0; i < GameDataInstance.Columns; i++)
         {
-            for (int i = 0; i < GameDataInstance.Columns; i++)
+            for (int j = 0; j < GameDataInstance.Rows; j++)
             {
-                for (int j = 0; j < GameDataInstance.Rows; j++)
-                {
-                    GameDataInstance.Board[i].Row[j] = "";
-                }
+                GameDataInstance.Board[i].Row[j] = "";
             }
         }
     }
 
     private void FillUpWithRandomLettersButton()
     {
-        if (GUILayout.Button("Fill Up With Random"))
+        for (int i = 0; i < GameDataInstance.Columns; i++)
         {
-            for (int i = 0; i < GameDataInstance.Columns; i++)
+            for (int j = 0; j < GameDataInstance.Rows; j++)
             {
-                for (int j = 0; j < GameDataInstance.Rows; j++)
+                int errorCounter = Regex.Matches(GameDataInstance.Board[i].Row[j], @"[a-zA-Z]").Count;
+                string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                int index = UnityEngine.Random.Range(0, letters.Length);
+
+                if (errorCounter == 0)
                 {
-                    int errorCounter = Regex.Matches(GameDataInstance.Board[i].Row[j], @"[a-zA-Z]").Count;
-                    string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                    int index = UnityEngine.Random.Range(0, letters.Length);
-
-                    if (errorCounter == 0)
-                    {
-                        GameDataInstance.Board[i].Row[j] = letters[index].ToString();
-                    }
-                }
-            }
-        }
-    }
-
-    private BoardData boardData;
-
-    // auto generate word
-    private void AutoFillRandomWord()
-    {
-        //var listWord = _dataList.li;
-        if (GUILayout.Button("Auto Fill Words"))
-        {
-            var list = GameDataInstance.SearchWords;
-
-            var randomColumn = UnityEngine.Random.Range(0, GameDataInstance.Columns - 1);
-            var randomRow = UnityEngine.Random.Range(0, GameDataInstance.Rows - 1);
-            if (list != null)
-            {
-                foreach (var data in list)
-                {
-                    //get letter of words
-                    var letters = data.Word.ToCharArray();
-                    //Debug.Log("Show letter:"+randomRay);
+                    GameDataInstance.Board[i].Row[j] = letters[index].ToString();
                 }
             }
         }
     }
 
     /// <summary>
-    /// check ray if -
-    /// - out of range
-    /// - similar word or not
+    /// list all drawable ray after check, then random in listDrawableRays to draw word
+    /// drawnWord to listed all word which is successfully drawn on board, using to compare to get new word
     /// </summary>
-    public BoardData.Ray RayCheck(int randomColumn, int randomRow, char[] lettersInWord)
+    private BoardData boardData;
+
+    private List<BoardData.Ray> listDrawableRays = new List<BoardData.Ray>();
+
+    // auto generate word
+    private void AutoFillRandomWord()
     {
-        //ray = (BoardData.Ray)Random.Range(0, Enum.GetValues(typeof(BoardData.Ray)).Length);
-        ray = BoardData.Ray.rayUp;
-        switch (ray)
+        ConvertToUpperButton();
+        ClearBoardButton();
+        var listSearchWords = GameDataInstance.SearchWords;
+
+        if (listSearchWords != null)
         {
-            case BoardData.Ray.rayUp:
-                //ray up
-                if (lettersInWord.Length + randomRow < GameDataInstance.Rows)
+            for (int i = 0; i < listSearchWords.Count; i++)
+            {
+                //get letter of words
+                var randomColumn = Random.Range(0, GameDataInstance.Columns - 1);
+                var randomRow = Random.Range(0, GameDataInstance.Rows - 1);
+                var word = listSearchWords[i].Word.ToUpper().ToCharArray();
+                //CheckWord(BoardData.Ray.RayUp, word, 0, 5);
+
+                RayCheck(randomColumn, randomRow, word);
+
+                if (listDrawableRays.Count > 0)
                 {
-                    foreach (var letter in lettersInWord)
-                    {
-                        if (letter.Equals(GameDataInstance.Board[randomColumn].Row[randomRow]) ||
-                            string.IsNullOrEmpty(GameDataInstance.Board[randomColumn].Row[randomRow]))
-                        {
-                            randomRow++;
-                            //return BoardData.Ray.rayUp;
-                        }
-                    }
+                    int index = Random.Range(0, listDrawableRays.Count);
+                    //Debug.Log($"random ray: {listDrawableRays[index]}");
 
-                    if (randomRow == lettersInWord.Length)
-                    {
-                        return ray;
-                    }
+
+                    //if(index < listDrawableRays.Count)
+                    DrawWord(listDrawableRays[index], word, randomColumn, randomRow);
+                    listDrawableRays.Clear();
                 }
-
-                break;
-            case BoardData.Ray.rayDown:
-                // ray down
-                foreach (var letter in lettersInWord)
+                else
                 {
-                    if (letter.Equals(GameDataInstance.Board[randomColumn].Row[randomRow]) ||
-                        string.IsNullOrEmpty(GameDataInstance.Board[randomColumn].Row[randomRow]))
-                    {
-                        GameDataInstance.Board[randomColumn].Row[randomRow] = letter.ToString().ToUpper();
-                        randomRow++;
-                    }
+                    RayCheck(Random.Range(0, GameDataInstance.Columns - 1),
+                        Random.Range(0, GameDataInstance.Rows - 1), word);
+                    i--;
                 }
+                //
+            }
+            FillUpWithRandomLettersButton();
+        }
+    }
 
-                break;
-            case BoardData.Ray.rayLeft:
-                // ray left
-                foreach (var letter in lettersInWord)
-                {
-                    if (letter.Equals(GameDataInstance.Board[randomColumn].Row[randomRow]) ||
-                        string.IsNullOrEmpty(GameDataInstance.Board[randomColumn].Row[randomRow]))
-                    {
-                        GameDataInstance.Board[randomColumn].Row[randomRow] = letter.ToString();
-                        randomColumn--;
-                    }
-                }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="randomColumn"></param>
+    /// <param name="randomRow"></param>
+    /// <param name="word"></param>
+    /// <returns></returns>
+    public List<BoardData.Ray> RayCheck(int randomColumn, int randomRow, char[] word)
+    {
+        listDrawableRays.Clear();
 
-                break;
-            case BoardData.Ray.rayRight:
-                // ray right
-                foreach (var letter in lettersInWord)
-                {
-                    if (letter.Equals(GameDataInstance.Board[randomColumn].Row[randomRow]) ||
-                        string.IsNullOrEmpty(GameDataInstance.Board[randomColumn].Row[randomRow]))
-                    {
-                        GameDataInstance.Board[randomColumn].Row[randomRow] = letter.ToString();
-                        randomColumn++;
-                    }
-                }
-
-                break;
-            case BoardData.Ray.rayDiagonalLeftUp:
-                // diagonal left up
-                foreach (var letter in lettersInWord)
-                {
-                    if (letter.Equals(GameDataInstance.Board[randomColumn].Row[randomRow]) ||
-                        string.IsNullOrEmpty(GameDataInstance.Board[randomColumn].Row[randomRow]))
-                    {
-                        GameDataInstance.Board[randomColumn].Row[randomRow] = letter.ToString();
-                        randomColumn--;
-                        randomRow--;
-                    }
-                }
-
-                break;
-            case BoardData.Ray.rayDiagonalLeftDown:
-                // diagonal left down
-                foreach (var letter in lettersInWord)
-                {
-                    if (letter.Equals(GameDataInstance.Board[randomColumn].Row[randomRow]) ||
-                        string.IsNullOrEmpty(GameDataInstance.Board[randomColumn].Row[randomRow]))
-                    {
-                        GameDataInstance.Board[randomColumn].Row[randomRow] = letter.ToString();
-                        randomColumn--;
-                        randomRow++;
-                    }
-                }
-
-                break;
-            case BoardData.Ray.rayDiagonalRightUp:
-                // diagonal right up
-                foreach (var letter in lettersInWord)
-                {
-                    if (letter.Equals(GameDataInstance.Board[randomColumn].Row[randomRow]) ||
-                        string.IsNullOrEmpty(GameDataInstance.Board[randomColumn].Row[randomRow]))
-                    {
-                        GameDataInstance.Board[randomColumn].Row[randomRow] = letter.ToString();
-                        randomColumn++;
-                        randomRow--;
-                    }
-                }
-
-                break;
-            case BoardData.Ray.rayDiagonalRightDown:
-                // diagonal right down
-                foreach (var letter in lettersInWord)
-                {
-                    if (letter.Equals(GameDataInstance.Board[randomColumn].Row[randomRow]) ||
-                        string.IsNullOrEmpty(GameDataInstance.Board[randomColumn].Row[randomRow]))
-                    {
-                        GameDataInstance.Board[randomColumn].Row[randomRow] = letter.ToString();
-                        randomColumn++;
-                        randomRow++;
-                    }
-                }
-
-                break;
-            default:
-                break;
+        // minus 1 cuz first letter start in rand position
+        // check if RayUp drawable
+        if (randomRow - (word.Length - 1) >= 0)
+        {
+            if (CheckWord(BoardData.Ray.RayUp, word, randomColumn, randomRow))
+            {
+                listDrawableRays.Add(BoardData.Ray.RayUp);
+            }
         }
 
-        return ray;
+        // ray down
+        if (randomRow + (word.Length - 1) < GameDataInstance.Rows)
+        {
+            if (CheckWord(BoardData.Ray.RayDown, word, randomColumn, randomRow))
+            {
+                listDrawableRays.Add(BoardData.Ray.RayDown);
+            }
+        }
+
+        // ray left
+        if (randomColumn - (word.Length - 1) >= 0)
+        {
+            if (CheckWord(BoardData.Ray.RayLeft, word, randomColumn, randomRow))
+            {
+                listDrawableRays.Add(BoardData.Ray.RayLeft);
+            }
+        }
+
+        // ray right
+        if (randomColumn + (word.Length - 1) < GameDataInstance.Columns)
+        {
+            if (CheckWord(BoardData.Ray.RayRight, word, randomColumn, randomRow))
+            {
+                listDrawableRays.Add(BoardData.Ray.RayRight);
+            }
+        }
+
+        // ray diagonal left up
+        if (randomRow - (word.Length - 1) >= 0 && randomColumn - (word.Length - 1) >= 0)
+        {
+            if (CheckWord(BoardData.Ray.RayDiagonalLeftUp, word, randomColumn, randomRow))
+            {
+                listDrawableRays.Add(BoardData.Ray.RayDiagonalLeftUp);
+            }
+        }
+
+        // ray diagonal left down
+        if (randomRow + (word.Length - 1) < GameDataInstance.Rows && randomColumn - (word.Length - 1) >= 0)
+        {
+            if (CheckWord(BoardData.Ray.RayDiagonalLeftDown, word, randomColumn, randomRow))
+            {
+                listDrawableRays.Add(BoardData.Ray.RayDiagonalLeftDown);
+            }
+        }
+
+        // ray diagonal right up
+        if (randomRow - (word.Length - 1) >= 0 && randomColumn + (word.Length - 1) < GameDataInstance.Columns)
+        {
+            if (CheckWord(BoardData.Ray.RayDiagonalRightUp, word, randomColumn, randomRow))
+            {
+                listDrawableRays.Add(BoardData.Ray.RayDiagonalRightUp);
+            }
+        }
+
+        //ray diagonal right down
+        if (randomRow + (word.Length - 1) < GameDataInstance.Rows &&
+            randomColumn + (word.Length - 1) < GameDataInstance.Columns)
+        {
+            if (CheckWord(BoardData.Ray.RayDiagonalRightDown, word, randomColumn, randomRow))
+            {
+                listDrawableRays.Add(BoardData.Ray.RayDiagonalRightDown);
+            }
+        }
+
+        listDrawableRays.Distinct().ToList();
+        return listDrawableRays;
+    }
+
+    public Boolean CheckWord(BoardData.Ray ray, char[] word, int ranCol, int ranRow)
+    {
+        switch (ray)
+        {
+            case BoardData.Ray.RayUp:
+                foreach (var letter in word)
+                {
+                    if (letter.ToString().Equals(GameDataInstance.Board[ranCol].Row[ranRow].Trim().ToUpper()) ||
+                        string.IsNullOrEmpty(GameDataInstance.Board[ranCol].Row[ranRow]))
+                    {
+                        ranRow--;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            case BoardData.Ray.RayDown:
+                foreach (var letter in word)
+                {
+                    if (letter.ToString().Equals(GameDataInstance.Board[ranCol].Row[ranRow].Trim().ToUpper()) ||
+                        string.IsNullOrEmpty(GameDataInstance.Board[ranCol].Row[ranRow]))
+                    {
+                        ranRow++;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            case BoardData.Ray.RayLeft:
+                foreach (var letter in word)
+                {
+                    if (letter.ToString().Equals(GameDataInstance.Board[ranCol].Row[ranRow].Trim().ToUpper()) ||
+                        string.IsNullOrEmpty(GameDataInstance.Board[ranCol].Row[ranRow]))
+                    {
+                        ranCol--;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            case BoardData.Ray.RayRight:
+                foreach (var letter in word)
+                {
+                    if (letter.ToString().Equals(GameDataInstance.Board[ranCol].Row[ranRow].Trim().ToUpper()) ||
+                        string.IsNullOrEmpty(GameDataInstance.Board[ranCol].Row[ranRow]))
+                    {
+                        ranCol++;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            case BoardData.Ray.RayDiagonalLeftUp:
+                foreach (var letter in word)
+                {
+                    if (letter.ToString().Equals(GameDataInstance.Board[ranCol].Row[ranRow].Trim().ToUpper()) ||
+                        string.IsNullOrEmpty(GameDataInstance.Board[ranCol].Row[ranRow]))
+                    {
+                        ranRow--;
+                        ranCol--;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            case BoardData.Ray.RayDiagonalLeftDown:
+                foreach (var letter in word)
+                {
+                    if (letter.ToString().Equals(GameDataInstance.Board[ranCol].Row[ranRow].Trim().ToUpper()) ||
+                        string.IsNullOrEmpty(GameDataInstance.Board[ranCol].Row[ranRow]))
+                    {
+                        ranRow++;
+                        ranCol--;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            case BoardData.Ray.RayDiagonalRightUp:
+                foreach (var letter in word)
+                {
+                    if (letter.ToString().Equals(GameDataInstance.Board[ranCol].Row[ranRow].Trim().ToUpper()) ||
+                        string.IsNullOrEmpty(GameDataInstance.Board[ranCol].Row[ranRow]))
+                    {
+                        ranRow--;
+                        ranCol++;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            case BoardData.Ray.RayDiagonalRightDown:
+                foreach (var letter in word)
+                {
+                    if (letter.ToString().Equals(GameDataInstance.Board[ranCol].Row[ranRow].Trim().ToUpper()) ||
+                        string.IsNullOrEmpty(GameDataInstance.Board[ranCol].Row[ranRow]))
+                    {
+                        ranRow++;
+                        ranCol++;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public void DrawWord(BoardData.Ray ray, char[] word, int column, int row)
+    {
+        switch (ray)
+        {
+            case BoardData.Ray.RayUp:
+                foreach (var letter in word)
+                {
+                    GameDataInstance.Board[column].Row[row] = letter.ToString().ToUpper();
+                    row--;
+                }
+
+                break;
+            case BoardData.Ray.RayDown:
+                foreach (var letter in word)
+                {
+                    GameDataInstance.Board[column].Row[row] = letter.ToString().ToUpper();
+                    row++;
+                }
+
+                break;
+            case BoardData.Ray.RayLeft:
+                foreach (var letter in word)
+                {
+                    GameDataInstance.Board[column].Row[row] = letter.ToString().ToUpper();
+                    column--;
+                }
+
+                break;
+            case BoardData.Ray.RayRight:
+                foreach (var letter in word)
+                {
+                    GameDataInstance.Board[column].Row[row] = letter.ToString().ToUpper();
+                    column++;
+                }
+
+                break;
+            case BoardData.Ray.RayDiagonalLeftUp:
+                foreach (var letter in word)
+                {
+                    GameDataInstance.Board[column].Row[row] = letter.ToString().ToUpper();
+                    row--;
+                    column--;
+                }
+
+                break;
+            case BoardData.Ray.RayDiagonalLeftDown:
+                foreach (var letter in word)
+                {
+                    GameDataInstance.Board[column].Row[row] = letter.ToString().ToUpper();
+                    row++;
+                    column--;
+                }
+
+                break;
+            case BoardData.Ray.RayDiagonalRightUp:
+                foreach (var letter in word)
+                {
+                    GameDataInstance.Board[column].Row[row] = letter.ToString().ToUpper();
+                    row--;
+                    column++;
+                }
+
+                break;
+            case BoardData.Ray.RayDiagonalRightDown:
+                foreach (var letter in word)
+                {
+                    GameDataInstance.Board[column].Row[row] = letter.ToString().ToUpper();
+                    row++;
+                    column++;
+                }
+
+                break;
+        }
     }
 }

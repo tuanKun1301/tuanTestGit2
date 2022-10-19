@@ -1,0 +1,298 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d51475507f8b4ddf97728296cf71ecf, type: 3}
+  m_Name: Animals3
+  m_EditorClassIdentifier: 
+  timeInSeconds: 250
+  Columns: 15
+  Rows: 15
+  Board:
+  - Size: 15
+    Row:
+    - F
+    - F
+    - M
+    - S
+    - H
+    - A
+    - R
+    - K
+    - O
+    - E
+    - I
+    - Q
+    - A
+    - Y
+    - H
+  - Size: 15
+    Row:
+    - O
+    - E
+    - I
+    - J
+    - Z
+    - L
+    - H
+    - S
+    - T
+    - B
+    - K
+    - T
+    - G
+    - O
+    - Q
+  - Size: 15
+    Row:
+    - X
+    - M
+    - E
+    - E
+    - Z
+    - D
+    - T
+    - J
+    - O
+    - D
+    - I
+    - T
+    - U
+    - S
+    - X
+  - Size: 15
+    Row:
+    - S
+    - O
+    - B
+    - Y
+    - F
+    - R
+    - F
+    - L
+    - A
+    - M
+    - I
+    - N
+    - G
+    - O
+    - L
+  - Size: 15
+    Row:
+    - B
+    - U
+    - A
+    - J
+    - I
+    - O
+    - K
+    - B
+    - H
+    - Q
+    - A
+    - R
+    - L
+    - F
+    - O
+  - Size: 15
+    Row:
+    - I
+    - S
+    - I
+    - C
+    - N
+    - E
+    - U
+    - T
+    - L
+    - W
+    - L
+    - K
+    - C
+    - J
+    - Q
+  - Size: 15
+    Row:
+    - B
+    - E
+    - H
+    - I
+    - E
+    - E
+    - I
+    - U
+    - I
+    - R
+    - B
+    - B
+    - H
+    - Z
+    - G
+  - Size: 15
+    Row:
+    - F
+    - Z
+    - H
+    - A
+    - S
+    - W
+    - V
+    - Q
+    - K
+    - L
+    - K
+    - T
+    - O
+    - C
+    - L
+  - Size: 15
+    Row:
+    - I
+    - R
+    - T
+    - H
+    - I
+    - P
+    - P
+    - O
+    - P
+    - O
+    - T
+    - A
+    - M
+    - U
+    - S
+  - Size: 15
+    Row:
+    - H
+    - D
+    - M
+    - G
+    - J
+    - G
+    - X
+    - K
+    - R
+    - E
+    - P
+    - A
+    - C
+    - F
+    - D
+  - Size: 15
+    Row:
+    - K
+    - I
+    - P
+    - E
+    - M
+    - G
+    - T
+    - O
+    - R
+    - R
+    - A
+    - P
+    - O
+    - S
+    - S
+  - Size: 15
+    Row:
+    - R
+    - K
+    - D
+    - E
+    - A
+    - I
+    - D
+    - I
+    - U
+    - Q
+    - S
+    - H
+    - X
+    - G
+    - Q
+  - Size: 15
+    Row:
+    - X
+    - E
+    - L
+    - I
+    - D
+    - O
+    - C
+    - O
+    - R
+    - C
+    - R
+    - S
+    - R
+    - P
+    - B
+  - Size: 15
+    Row:
+    - B
+    - Y
+    - W
+    - Z
+    - T
+    - U
+    - R
+    - T
+    - L
+    - E
+    - P
+    - E
+    - V
+    - T
+    - R
+  - Size: 15
+    Row:
+    - Z
+    - C
+    - L
+    - V
+    - X
+    - S
+    - C
+    - S
+    - R
+    - O
+    - A
+    - M
+    - X
+    - W
+    - U
+  SearchWords:
+  - Found: 0
+    Word: FOX
+  - Found: 0
+    Word: MOUSE
+  - Found: 0
+    Word: PARROT
+  - Found: 0
+    Word: RHINO
+  - Found: 0
+    Word: HIPPOPOTAMUS
+  - Found: 0
+    Word: GOAT
+  - Found: 0
+    Word: TURTLE
+  - Found: 0
+    Word: SHARK
+  - Found: 0
+    Word: SQUID
+  - Found: 0
+    Word: FLAMINGO
+  - Found: 0
+    Word: OSTRICH
+  - Found: 0
+    Word: CROCODILE

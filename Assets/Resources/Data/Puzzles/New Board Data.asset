@@ -10,53 +10,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d51475507f8b4ddf97728296cf71ecf, type: 3}
-  m_Name: Food2
+  m_Name: New Board Data
   m_EditorClassIdentifier: 
-  timeInSeconds: 60
+  timeInSeconds: 200
   Columns: 5
   Rows: 5
   Board:
   - Size: 5
     Row:
-    - M
-    - C
-    - Y
-    - D
-    - H
-  - Size: 5
-    Row:
-    - I
-    - A
-    - G
-    - A
-    - K
-  - Size: 5
-    Row:
-    - L
-    - N
-    - G
-    - E
-    - W
-  - Size: 5
-    Row:
-    - K
-    - D
-    - E
-    - T
-    - N
-  - Size: 5
-    Row:
-    - T
-    - Y
-    - H
-    - O
+    - R
     - B
+    - O
+    - S
+    - D
+  - Size: 5
+    Row:
+    - C
+    - E
+    - D
+    - G
+    - J
+  - Size: 5
+    Row:
+    - U
+    - A
+    - L
+    - O
+    - I
+  - Size: 5
+    Row:
+    - Q
+    - R
+    - T
+    - Z
+    - G
+  - Size: 5
+    Row:
+    - P
+    - F
+    - Z
+    - F
+    - N
   SearchWords:
-  - Found: 1
-    Word: CANDY
-  - Found: 1
-    Word: EGG
-  - Found: 1
-    Word: MILK
-  - Found: 1
-    Word: TEA
+  - Found: 0
+    Word: CAT
+  - Found: 0
+    Word: DOG
+  - Found: 0
+    Word: BEAR

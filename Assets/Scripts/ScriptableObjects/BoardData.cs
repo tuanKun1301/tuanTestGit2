@@ -15,14 +15,14 @@ public class BoardData : ScriptableObject
     }
     public enum Ray
     {
-        rayUp,
-        rayDown,
-        rayLeft,
-        rayRight,
-        rayDiagonalLeftUp,
-        rayDiagonalLeftDown,
-        rayDiagonalRightUp,
-        rayDiagonalRightDown,
+        RayUp,
+        RayDown,
+        RayLeft,
+        RayRight,
+        RayDiagonalLeftUp,
+        RayDiagonalLeftDown,
+        RayDiagonalRightUp,
+        RayDiagonalRightDown
     }
     [System.Serializable]
     public class BoardRow
