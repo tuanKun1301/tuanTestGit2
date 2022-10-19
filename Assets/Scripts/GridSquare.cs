@@ -18,7 +18,7 @@ public class GridSquare : MonoBehaviour
     private bool _correct;
 
     private AudioSource _source;
-    
+
     public void SetIndex(int index)
     {
         _index = index;
@@ -36,11 +36,8 @@ public class GridSquare : MonoBehaviour
         _correct = false;
         _displayedImage = GetComponent<SpriteRenderer>();
         _source = GetComponent<AudioSource>();
-    }
+        positionSave = new List<Vector2>();
 
-    void Update()
-    {
-        
     }
 
     private void OnEnable()
@@ -66,6 +63,7 @@ public class GridSquare : MonoBehaviour
             _correct = true;
             _displayedImage.sprite = _correctLetterData.image;
         }
+
         _selected = false;
         _clicked = false;
     }
@@ -102,23 +100,61 @@ public class GridSquare : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = _normalLetterData.image;
     }
 
-    private void OnMouseDown()
-    {
-        OnEnableSquareSelection();
-        GameEvents.EnableSquareSelectionMethod();
-        CheckSquare();
-        _displayedImage.sprite = _selectedLetterData.image;
-    }
+    // private void OnMouseDown()
+    // {
+    //     OnEnableSquareSelection();
+    //     GameEvents.EnableSquareSelectionMethod();
+    //     CheckSquare();
+    //     _displayedImage.sprite = _selectedLetterData.image;
+    // }
+    //
+    // private void OnMouseEnter()
+    // {
+    //     if (Input.GetMouseButtonDown(0))
+    //     {
+    //         Debug.Log($"pos{gameObject.transform.position}");
+    //     }
+    //     CheckSquare();
+    // }
+    private Vector3 firstPos;
+    private Vector3 secondPos;
+    private List<Vector2> positionSave;
     private void OnMouseEnter()
     {
-        //Debug.Log($"mouse enter here: {gameObject.transform.position}");
-        CheckSquare();
+        if (Input.GetMouseButtonDown(0))
+        {
+            firstPos = gameObject.transform.position;
+            positionSave.Add(firstPos);
+            GameEvents.GetPositionMethod(firstPos, gameObject);
+            
+            //PlaySound();
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            secondPos = gameObject.transform.position;
+            GameEvents.ClearPositionMethod();
+        }
+ 
+        else if (Input.GetMouseButton(0))
+        {
+            PlaySound();
+            GameEvents.GetPositionMethod(gameObject.transform.position,gameObject);
+            //GameEvents.CheckSquareMethod(_normalLetterData.letter, gameObject.transform.position, _index);
+            //_displayedImage.sprite = _selectedLetterData.image;
+            
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        Console.Clear();
+        GameEvents.ClearPositionMethod();
     }
 
     private void OnMouseUp()
     {
-        //Debug.Log($"pos:{gameObject.transform.position}");
         GameEvents.ClearSelectionMethod();
+        GameEvents.ClearPositionMethod();
         GameEvents.DisableSquareSelectionMethod();
     }
 
@@ -126,70 +162,18 @@ public class GridSquare : MonoBehaviour
     {
         if (_selected == false && _clicked == true)
         {
-            // play sound
-            if (SoundManager.instance.IsSoundFxMuted() == false)
-            {
-                _source.Play();
-            }
-
+            PlaySound();
             _selected = true;
             GameEvents.CheckSquareMethod(_normalLetterData.letter, gameObject.transform.position, _index);
         }
     }
 
-    
-    private Vector3 mousePosition;
-    private Vector3 position = new Vector3(0f, 0f,0f);
-    
-    public BoardData.Ray PredictionRay(Vector2 firstPosition, Vector2 secondPosition)
+    private void PlaySound()
     {
-        int a = 0;
-        if (firstPosition != secondPosition)
+        if (SoundManager.instance.IsSoundFxMuted() == false)
         {
-            //Debug.Log($"first pos:{firstPosition} --- second pos:{secondPosition}");
-            var direction = secondPosition - firstPosition;
-            Debug.Log($"direction: {direction}");
-            if (direction.x > 0 && direction.y == 0)
-            {
-                return BoardData.Ray.RayRight;
-            }
-            if (direction.x < 0 && direction.y == 0)
-            {
-                return BoardData.Ray.RayLeft;
-            }
-            if (direction.x == 0 && direction.y < 0)
-            {
-                return BoardData.Ray.RayUp;
-            }
-            if (direction.x == 0 && direction.y > 0)
-            {
-                return BoardData.Ray.RayDown;
-            }
-            if (direction.x > 0 && direction.y > 0 && direction.x == direction.y)
-            {
-                return BoardData.Ray.RayDiagonalRightDown;
-            }
-            if (direction.x < 0 && direction.y > 0 && direction.x == direction.y)
-            {
-                return BoardData.Ray.RayDiagonalLeftDown;
-            }
-            if (direction.x > 0 && direction.y < 0 && direction.x == direction.y)
-            {
-                return BoardData.Ray.RayDiagonalRightUp;
-            }
-            if (direction.x < 0 && direction.y < 0 && direction.x == direction.y)
-            {
-                return BoardData.Ray.RayDiagonalLeftUp;
-            }
-        }
-
-        return BoardData.Ray.RayDown;
-    }
-
-    public void DrawWordInPrediction(BoardData.Ray ray)
-    {
-        switch (ray)
-        {
+            _source.Play();
         }
     }
+    
 }

@@ -13,31 +13,13 @@ public class WordsGrid : MonoBehaviour
     public float topPosition;
 
     private List<GameObject> _squareList = new List<GameObject>();
-
+    
+    
     // Start is called before the first frame update
     void Start()
     {
         SpawnGridSquares();
         SetSquarePosition();
-    }
-
-    private Vector2 firstMousePosition;
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            firstMousePosition = gameObject.transform.position;
-            //Debug.Log($"first pos:{Input.mousePosition} ");
-        }
-        // else if (Input.GetMouseButtonUp(0))
-        // {
-        //     secondMousePosition = gameObject.transform.position;
-        //     //Debug.Log($"second pos:{Input.mousePosition}");
-        // }
-        if (Input.GetMouseButton(0))
-        {
-            Debug.Log($"pos:{firstMousePosition} -- {gameObject.transform.position} ");
-        }
     }
 
     private void SetSquarePosition()
@@ -65,7 +47,7 @@ public class WordsGrid : MonoBehaviour
 
             var positionX = startPosition.x + offset.x * columnNumber;
             var positionY = startPosition.y - offset.y * rowNumber;
-            //Debug.Log($"position: ({positionX}, {positionY})");
+            
             square.GetComponent<Transform>().position = new Vector2(positionX, positionY);
             rowNumber++;
         }
@@ -119,7 +101,7 @@ public class WordsGrid : MonoBehaviour
                     {
                         _squareList.Add(Instantiate(gridSquarePrefab));
                         _squareList[_squareList.Count - 1].GetComponent<GridSquare>()
-                            .SetSprite(normalLetterData, correctLetterData, selectedLetterData);/*set sprite*/
+                            .SetSprite(normalLetterData, correctLetterData, selectedLetterData);
                         _squareList[_squareList.Count - 1].transform.SetParent(this.transform);
                         _squareList[_squareList.Count - 1].GetComponent<Transform>().position = new Vector3(0f, 0f, 0f);
                         _squareList[_squareList.Count - 1].transform.localScale = squareScale;
@@ -175,4 +157,6 @@ public class WordsGrid : MonoBehaviour
         float width = (1.7f * height) * Screen.width / Screen.height;
         return width / 2;
     }
+
+    
 }

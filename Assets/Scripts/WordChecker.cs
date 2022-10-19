@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,13 +22,14 @@ public class WordChecker : MonoBehaviour
     private Vector3 _rayStartPosition;
     private List<int> _correctSquareList = new List<int>();
 
-    private Vector2 firstMousePosition;
-    private Vector2 secondMousePosition;
     private void OnEnable()
     {
         GameEvents.OnCheckSquare += SquareSelected;
         GameEvents.OnClearSelection += ClearSelection;
         GameEvents.OnLoadNextLevel += LoadNextGameLevel;
+        //test logic
+        GameEvents.OnGetPosition += GetPosition;
+        GameEvents.OnClearPosition += ClearPosition;
     }
 
     private void OnDisable()
@@ -35,6 +37,9 @@ public class WordChecker : MonoBehaviour
         GameEvents.OnCheckSquare -= SquareSelected;
         GameEvents.OnClearSelection -= ClearSelection;
         GameEvents.OnLoadNextLevel -= LoadNextGameLevel;
+        //test logic
+        GameEvents.OnGetPosition -= GetPosition;
+        GameEvents.OnClearPosition -= ClearPosition;
     }
 
     private void LoadNextGameLevel()
@@ -48,6 +53,8 @@ public class WordChecker : MonoBehaviour
         currentGameData.selectedBoardData.ClearData();
         _assignedPoints = 0;
         _completedWords = 0;
+        gameObjectList.Clear();
+        positionList.Clear();
     }
 
 
@@ -65,8 +72,6 @@ public class WordChecker : MonoBehaviour
             Debug.DrawRay(_rayDiagonalRightUp.origin, _rayDiagonalRightUp.direction * 4);
             Debug.DrawRay(_rayDiagonalRightDown.origin, _rayDiagonalRightDown.direction * 4);
         }
-        
-        
     }
 
     private void SquareSelected(string letter, Vector3 position, int squareIndex)
@@ -142,35 +147,32 @@ public class WordChecker : MonoBehaviour
 
     private Ray SelectRay(Vector2 firstPosition, Vector2 secondPosition)
     {
-        //Debug.Log($"Old position: {firstPosition} - new position: {secondPosition}");
         var direction = (secondPosition - firstPosition).normalized;
-        var firstDirection = (secondPosition + firstPosition).normalized;
-        var secondDirection = (secondPosition + firstPosition).normalized;
         float tolerance = 0.01f;
         if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - 1f) < tolerance)
             return _rayUp;
-        
-        if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y + 1f) < tolerance)
+
+        if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
             return _rayDown;
-        
-        if (Math.Abs(direction.x + 1f) < tolerance && Math.Abs(direction.y) < tolerance)
+
+        if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y) < tolerance)
             return _rayLeft;
-        
+
         if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y) < tolerance)
             return _rayRight;
-        
+
         if (direction.x < 0f && direction.y > 0f)
             return _rayDiagonalLeftUp;
-        
+
         if (direction.x < 0f && direction.y < 0f)
             return _rayDiagonalLeftDown;
-        
+
         if (direction.x > 0f && direction.y > 0f)
             return _rayDiagonalRightUp;
-        
+
         if (direction.x > 0f && direction.y < 0f)
             return _rayDiagonalRightDown;
-        
+
         return _rayDown;
     }
 
@@ -237,5 +239,37 @@ public class WordChecker : MonoBehaviour
             if (loadNextCategory)
                 GameEvents.UnlockNextCategoryMethod();
         }
+    }
+
+    //test logic
+    private List<GameObject> gameObjectList = new List<GameObject>();
+    private List<Vector2> positionList = new List<Vector2>();
+    
+    private void GetPosition(Vector2 position, GameObject gameObj)
+    {
+        gameObjectList.Add(gameObj);
+        positionList.Add(position);
+        
+
+        //Debug.Log($"position count:{positions.Count}");
+        // start check ray and draw 
+        var firstPosition = positionList[0];
+        var secondPosition = positionList[positionList.LastIndexOf(position)];
+        Debug.Log(firstPosition + "<-->" + secondPosition);
+        if (firstPosition != secondPosition)
+        {
+            Debug.Log(firstPosition + "<-->" + secondPosition);
+
+            if (firstPosition.x == secondPosition.x && firstPosition.y < secondPosition.y)
+            {
+                Debug.Log($"come here:{SelectRay(firstPosition, secondPosition)}");
+            }
+        }
+    }
+
+    private void ClearPosition()
+    {
+        gameObjectList.Clear();
+        positionList.Clear();
     }
 }

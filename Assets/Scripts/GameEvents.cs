@@ -141,4 +141,29 @@ public static class GameEvents
             OnToggleSoundFx();
         }
     }
+    
+    
+    // test logic
+    public delegate void GetPosition(Vector2 firstPos, GameObject gameObj);
+
+    public static event GetPosition OnGetPosition;
+
+    public static void GetPositionMethod(Vector2 firstPos, GameObject gameObj)
+    {
+        if (OnGetPosition != null)
+        {
+            OnGetPosition(firstPos, gameObj);
+        }
+    }
+    public delegate void ClearPosition();
+
+    public static event ClearPosition OnClearPosition;
+
+    public static void ClearPositionMethod()
+    {
+        if (OnClearPosition != null)
+        {
+            OnClearPosition();
+        }
+    }
 }
