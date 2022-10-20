@@ -158,5 +158,8 @@ public class WordsGrid : MonoBehaviour
         return width / 2;
     }
 
-    
+    public List<GameObject> getAllsquarelist()
+    {
+        return _squareList;
+    }
 }

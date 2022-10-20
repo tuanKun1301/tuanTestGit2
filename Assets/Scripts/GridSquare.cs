@@ -29,6 +29,11 @@ public class GridSquare : MonoBehaviour
         return _index;
     }
 
+    public String GetLetter()
+    {
+        return _normalLetterData.letter;
+    }
+
     void Start()
     {
         _selected = false;
@@ -87,7 +92,10 @@ public class GridSquare : MonoBehaviour
     private void SelectSquare(Vector3 position)
     {
         if (this.gameObject.transform.position == position)
+        {
+            
             _displayedImage.sprite = _selectedLetterData.image;
+        }
     }
 
     public void SetSprite(AlphabetData.LetterData normalLetterData, AlphabetData.LetterData selectedLetterData,
@@ -116,11 +124,12 @@ public class GridSquare : MonoBehaviour
     //     }
     //     CheckSquare();
     // }
-    private Vector3 firstPos;
+    
     private Vector3 secondPos;
     private List<Vector2> positionSave;
-    private void OnMouseEnter()
+    private void OnMouseOver()
     {
+        Vector3 firstPos;
         if (Input.GetMouseButtonDown(0))
         {
             firstPos = gameObject.transform.position;
@@ -139,8 +148,6 @@ public class GridSquare : MonoBehaviour
         {
             PlaySound();
             GameEvents.GetPositionMethod(gameObject.transform.position,gameObject);
-            //GameEvents.CheckSquareMethod(_normalLetterData.letter, gameObject.transform.position, _index);
-            //_displayedImage.sprite = _selectedLetterData.image;
             
         }
     }
@@ -148,7 +155,7 @@ public class GridSquare : MonoBehaviour
     private void OnMouseExit()
     {
         Console.Clear();
-        GameEvents.ClearPositionMethod();
+        //GameEvents.ClearPositionMethod();
     }
 
     private void OnMouseUp()
@@ -175,5 +182,7 @@ public class GridSquare : MonoBehaviour
             _source.Play();
         }
     }
+
+    
     
 }
