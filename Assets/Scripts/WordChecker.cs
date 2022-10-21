@@ -2,8 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using UnityEngine;
+using UnityEngine.Profiling.Experimental;
 using UnityEngine.SceneManagement;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class WordChecker : MonoBehaviour
 {
@@ -14,33 +18,43 @@ public class WordChecker : MonoBehaviour
 
     private int _assignedPoints = 0;
     private int _completedWords = 0;
-    private Ray _rayUp, _rayDown;
-    private Ray _rayLeft, _rayRight;
-    private Ray _rayDiagonalLeftUp, _rayDiagonalLeftDown;
-    private Ray _rayDiagonalRightUp, _rayDiagonalRightDown;
+
     private Ray _currentRay = new Ray();
     private Vector3 _rayStartPosition;
     private List<int> _correctSquareList = new List<int>();
 
+    private enum Ray
+    {
+        _rayUp,
+        _rayDown,
+        _rayLeft,
+        _rayRight,
+        _rayDiagonalLeftUp,
+        _rayDiagonalLeftDown,
+        _rayDiagonalRightUp,
+        _rayDiagonalRightDown
+    }
 
     private void OnEnable()
     {
-        GameEvents.OnCheckSquare += SquareSelected;
+        //GameEvents.OnCheckSquare += SquareSelected;
         GameEvents.OnClearSelection += ClearSelection;
         GameEvents.OnLoadNextLevel += LoadNextGameLevel;
         //test logic
         GameEvents.OnGetPosition += GetPosition;
         GameEvents.OnClearPosition += ClearPosition;
+        GameEvents.OnCheckWord += CheckWord;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnCheckSquare -= SquareSelected;
+        //GameEvents.OnCheckSquare -= SquareSelected;
         GameEvents.OnClearSelection -= ClearSelection;
         GameEvents.OnLoadNextLevel -= LoadNextGameLevel;
         //test logic
         GameEvents.OnGetPosition -= GetPosition;
         GameEvents.OnClearPosition -= ClearPosition;
+        GameEvents.OnCheckWord -= CheckWord;
     }
 
     private void LoadNextGameLevel()
@@ -55,76 +69,91 @@ public class WordChecker : MonoBehaviour
         _assignedPoints = 0;
         _completedWords = 0;
         gameObjectList = new List<GameObject>();
-        positionList = new List<Vector2>();
+        letterList = new List<int>();
         gameObjectList.Clear();
-        positionList.Clear();
+        letterList.Clear();
     }
 
 
-    void Update()
+    // void Update()
+    // {
+    //     if (_assignedPoints > 0 && Application.isEditor)
+    //     {
+    //         Debug.DrawRay(_rayUp.origin, _rayUp.direction * 4);
+    //         Debug.DrawRay(_rayDown.origin, _rayDown.direction * 4);
+    //         Debug.DrawRay(_rayLeft.origin, _rayLeft.direction * 4);
+    //         Debug.DrawRay(_rayRight.origin, _rayRight.direction * 4);
+    //
+    //         Debug.DrawRay(_rayDiagonalLeftUp.origin, _rayDiagonalLeftUp.direction * 4);
+    //         Debug.DrawRay(_rayDiagonalLeftDown.origin, _rayDiagonalLeftDown.direction * 4);
+    //         Debug.DrawRay(_rayDiagonalRightUp.origin, _rayDiagonalRightUp.direction * 4);
+    //         Debug.DrawRay(_rayDiagonalRightDown.origin, _rayDiagonalRightDown.direction * 4);
+    //     }
+    // }
+    //
+    // private void SquareSelected(string letter, Vector3 position, int squareIndex)
+    // {
+    //     if (_assignedPoints == 0)
+    //     {
+    //         _rayStartPosition = position;
+    //         _correctSquareList.Add(squareIndex);
+    //         _word += letter;
+    //         // ray +
+    //         _rayUp = new Ray(new Vector2(position.x, position.y), new Vector2(0f, 1));
+    //         _rayDown = new Ray(new Vector2(position.x, position.y), new Vector2(0f, -1));
+    //         _rayLeft = new Ray(new Vector2(position.x, position.y), new Vector2(-1, 0f));
+    //         _rayRight = new Ray(new Vector2(position.x, position.y), new Vector2(1, 0f));
+    //         // ray x
+    //         _rayDiagonalLeftUp = new Ray(new Vector2(position.x, position.y), new Vector2(-1, 1));
+    //         _rayDiagonalLeftDown = new Ray(new Vector2(position.x, position.y), new Vector2(-1, -1));
+    //         _rayDiagonalRightUp = new Ray(new Vector2(position.x, position.y), new Vector2(1, 1));
+    //         _rayDiagonalRightDown = new Ray(new Vector2(position.x, position.y), new Vector2(1, -1));
+    //     }
+    //     else if (_assignedPoints == 1)
+    //     {
+    //         _correctSquareList.Add(squareIndex);
+    //         _currentRay = SelectRay(_rayStartPosition, position);
+    //         GameEvents.SelectSquareMethod(position);
+    //         //Debug.Log($"test 1:({Input.mousePosition.x}, {Input.mousePosition.y})");
+    //         _word += letter;
+    //         CheckWord();
+    //     }
+    //     else
+    //     {
+    //         if (IsPointOnTheRay(_currentRay, position))
+    //         {
+    //             //Debug.Log("test 2:");
+    //             _correctSquareList.Add(squareIndex);
+    //             GameEvents.SelectSquareMethod(position);
+    //             _word += letter;
+    //             CheckWord();
+    //         }
+    //     }
+    //
+    //     _assignedPoints++;
+    // }
+    //
+    private void CheckWord()
     {
-        if (_assignedPoints > 0 && Application.isEditor)
+        foreach (var index in letterList.Distinct())
         {
-            Debug.DrawRay(_rayUp.origin, _rayUp.direction * 4);
-            Debug.DrawRay(_rayDown.origin, _rayDown.direction * 4);
-            Debug.DrawRay(_rayLeft.origin, _rayLeft.direction * 4);
-            Debug.DrawRay(_rayRight.origin, _rayRight.direction * 4);
-
-            Debug.DrawRay(_rayDiagonalLeftUp.origin, _rayDiagonalLeftUp.direction * 4);
-            Debug.DrawRay(_rayDiagonalLeftDown.origin, _rayDiagonalLeftDown.direction * 4);
-            Debug.DrawRay(_rayDiagonalRightUp.origin, _rayDiagonalRightUp.direction * 4);
-            Debug.DrawRay(_rayDiagonalRightDown.origin, _rayDiagonalRightDown.direction * 4);
-        }
-    }
-
-    private void SquareSelected(string letter, Vector3 position, int squareIndex)
-    {
-        if (_assignedPoints == 0)
-        {
-            _rayStartPosition = position;
-            _correctSquareList.Add(squareIndex);
-            _word += letter;
-            // ray +
-            _rayUp = new Ray(new Vector2(position.x, position.y), new Vector2(0f, 1));
-            _rayDown = new Ray(new Vector2(position.x, position.y), new Vector2(0f, -1));
-            _rayLeft = new Ray(new Vector2(position.x, position.y), new Vector2(-1, 0f));
-            _rayRight = new Ray(new Vector2(position.x, position.y), new Vector2(1, 0f));
-            // ray x
-            _rayDiagonalLeftUp = new Ray(new Vector2(position.x, position.y), new Vector2(-1, 1));
-            _rayDiagonalLeftDown = new Ray(new Vector2(position.x, position.y), new Vector2(-1, -1));
-            _rayDiagonalRightUp = new Ray(new Vector2(position.x, position.y), new Vector2(1, 1));
-            _rayDiagonalRightDown = new Ray(new Vector2(position.x, position.y), new Vector2(1, -1));
-        }
-        else if (_assignedPoints == 1)
-        {
-            _correctSquareList.Add(squareIndex);
-            _currentRay = SelectRay(_rayStartPosition, position);
-            GameEvents.SelectSquareMethod(position);
-            //Debug.Log($"test 1:({Input.mousePosition.x}, {Input.mousePosition.y})");
-            _word += letter;
-            CheckWord();
-        }
-        else
-        {
-            if (IsPointOnTheRay(_currentRay, position))
+            foreach (var gameObj in GetComponent<WordsGrid>().getAllsquarelist())
             {
-                //Debug.Log("test 2:");
-                _correctSquareList.Add(squareIndex);
-                GameEvents.SelectSquareMethod(position);
-                _word += letter;
-                CheckWord();
+                //_word += gameObject.GetComponent<GridSquare>().GetLetter(index);
+                if (index == gameObj.GetComponent<GridSquare>().GetIndex())
+                {
+                    //Debug.Log(index);
+                    _word += gameObj.GetComponent<GridSquare>().GetLetter();
+                }
             }
         }
 
-        _assignedPoints++;
-    }
-
-    private void CheckWord()
-    {
         foreach (var searchingWord in currentGameData.selectedBoardData.SearchWords)
         {
-            if (_word == searchingWord.Word && searchingWord.Found == false)
+            if ((Reverse(_word.Trim()) == searchingWord.Word || _word.Trim() == searchingWord.Word) &&
+                searchingWord.Found == false)
             {
+                Debug.Log("come here");
                 searchingWord.Found = true;
                 GameEvents.CorrectWordMethod(_word, _correctSquareList);
                 _completedWords++;
@@ -134,50 +163,60 @@ public class WordChecker : MonoBehaviour
                 return;
             }
         }
+
+        letterList.Clear();
     }
 
-    private bool IsPointOnTheRay(Ray currentRay, Vector3 point)
+    private String Reverse(string s)
     {
-        var hints = Physics.RaycastAll(currentRay, 100.0f);
-        for (int i = 0; i < hints.Length; i++)
-        {
-            if (hints[i].transform.position == point)
-                return true;
-        }
-
-        return false;
+        char[] charArray = s.ToCharArray();
+        Array.Reverse(charArray);
+        Debug.Log(new string(charArray));
+        return new string(charArray);
     }
+    //
+    // private bool IsPointOnTheRay(Ray currentRay, Vector3 point)
+    // {
+    //     var hints = Physics.RaycastAll(currentRay, 100.0f);
+    //     for (int i = 0; i < hints.Length; i++)
+    //     {
+    //         if (hints[i].transform.position == point)
+    //             return true;
+    //     }
+    //
+    //     return false;
+    // }
 
-    private Ray SelectRay(Vector2 firstPosition, Vector2 secondPosition)
-    {
-        var direction = (secondPosition - firstPosition).normalized;
-        float tolerance = 0.01f;
-        if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - 1f) < tolerance)
-            return _rayUp;
-
-        if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
-            return _rayDown;
-
-        if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y) < tolerance)
-            return _rayLeft;
-
-        if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y) < tolerance)
-            return _rayRight;
-
-        if (direction.x < 0f && direction.y > 0f)
-            return _rayDiagonalLeftUp;
-
-        if (direction.x < 0f && direction.y < 0f)
-            return _rayDiagonalLeftDown;
-
-        if (direction.x > 0f && direction.y > 0f)
-            return _rayDiagonalRightUp;
-
-        if (direction.x > 0f && direction.y < 0f)
-            return _rayDiagonalRightDown;
-
-        return _rayDown;
-    }
+    // private Ray SelectRay(Vector2 startPos, Vector2 endPos)
+    // {
+    //     var direction = (endPos - startPos).normalized;
+    //     float tolerance = 0.01f;
+    //     if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - 1f) < tolerance)
+    //         return _rayUp;
+    //
+    //     if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
+    //         return _rayDown;
+    //
+    //     if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y) < tolerance)
+    //         return _rayLeft;
+    //
+    //     if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y) < tolerance)
+    //         return _rayRight;
+    //
+    //     if (direction.x < 0f && direction.y > 0f)
+    //         return _rayDiagonalLeftUp;
+    //
+    //     if (direction.x < 0f && direction.y < 0f)
+    //         return _rayDiagonalLeftDown;
+    //
+    //     if (direction.x > 0f && direction.y > 0f)
+    //         return _rayDiagonalRightUp;
+    //
+    //     if (direction.x > 0f && direction.y < 0f)
+    //         return _rayDiagonalRightDown;
+    //
+    //     return _rayDown;
+    // }
 
     private void ClearSelection()
     {
@@ -246,148 +285,165 @@ public class WordChecker : MonoBehaviour
 
     //test logic
     private List<GameObject> gameObjectList;
-    private List<Vector2> positionList;
+    private List<int> letterList;
 
     private void GetPosition(Vector2 position, GameObject gameObj)
     {
         gameObjectList.Add(gameObj);
-        positionList.Add(position);
-        //Debug.Log($"position count:{positionList.Count}");
-        // Debug.Log($"gameObjectList count:{gameObjectList.Count}");
-        // start check ray and draw 
+        var uniqueList = gameObjectList.Distinct().ToList();
 
-        //get letter
-        //GetComponent<GridSquare>().GetLetter();
-
-        if (positionList.Count > 2)
+        if (uniqueList.Count >= 2)
         {
-            var firstPosition = positionList[0];
-            var secondPosition = positionList[positionList.LastIndexOf(position)];
-            //Debug.Log(firstPosition + "<-->" + secondPosition);
-            if (firstPosition != secondPosition)
+            var startPos = uniqueList[0].transform.position;
+            var endPos = uniqueList[uniqueList.LastIndexOf(gameObj)].transform.position;
+
+            var list = GetComponent<WordsGrid>().getAllsquarelist();
+            //Debug.Log(startPos + "<-->" + endPos);
+            if (startPos != endPos)
             {
-                var direction = (secondPosition - firstPosition).normalized;
+                var direction = (endPos - startPos).normalized;
                 float tolerance = 0.01f;
+
+                GameEvents.SelectSquareMethod(startPos);
+                GameEvents.SelectSquareMethod(endPos);
+                letterList.Add(gameObj.GetComponent<GridSquare>().GetIndex());
+                //ray Up
                 if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - 1f) < tolerance)
                 {
-                    DrawWord(BoardData.Ray.RayUp, firstPosition, secondPosition);
+                    foreach (var square in list)
+                    {
+                        var currentPos = square.transform.position;
+                        square.GetComponent<GridSquare>().GetIndex();
+                        // ray up check
+                        if (currentPos.x == startPos.x && startPos.y <= currentPos.y && currentPos.y <= endPos.y)
+                        {
+                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
+                            GameEvents.SelectSquareMethod(currentPos);
+                        }
+                    }
                 }
-
-                if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
+                // ray down
+                else if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
                 {
-                    DrawWord(BoardData.Ray.RayDown, firstPosition, secondPosition);
+                    foreach (var square in list)
+                    {
+                        var currentPos = square.transform.position;
+                        // ray down check
+                        if (currentPos.x == startPos.x && startPos.y >= currentPos.y && currentPos.y >= endPos.y)
+                        {
+                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
+                            GameEvents.SelectSquareMethod(currentPos);
+                        }
+                    }
                 }
-
-                if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y) < tolerance)
+                // ray left
+                else if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y) < tolerance)
                 {
-                    DrawWord(BoardData.Ray.RayLeft, firstPosition, secondPosition);
+                    foreach (var square in list)
+                    {
+                        var currentPos = square.transform.position;
+                        // ray left check
+                        if (currentPos.y == startPos.y && startPos.x >= currentPos.x && currentPos.x >= endPos.x)
+                        {
+                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
+                            GameEvents.SelectSquareMethod(currentPos);
+                        }
+                    }
                 }
-
-                if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y) < tolerance)
+                // ray right
+                else if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y) < tolerance)
                 {
-                    DrawWord(BoardData.Ray.RayRight, firstPosition, secondPosition);
+                    
+                    foreach (var square in list)
+                    {
+                        var currentPos = square.transform.position;
+                        // ray right check
+                        if (currentPos.y == startPos.y && startPos.x <= currentPos.x && currentPos.x <= endPos.x)
+                        {
+                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
+                            GameEvents.SelectSquareMethod(currentPos);
+                        }
+                    }
                 }
-
-                if (direction.x < 0f && direction.y > 0f)
+                // ray diagonal left up
+                else if (direction.x < 0f && direction.y > 0f)
                 {
-                    DrawWord(BoardData.Ray.RayDiagonalLeftUp, firstPosition, secondPosition);
-                }
+                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndex());
+                    foreach (var square in list)
+                    {
+                        var currentPos = square.transform.position;
 
-                if (direction.x < 0f && direction.y < 0f)
-                {
-                    DrawWord(BoardData.Ray.RayDiagonalLeftDown, firstPosition, secondPosition);
+                        if (checkAngle(startPos, currentPos, endPos))
+                        {
+                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
+                            GameEvents.SelectSquareMethod(currentPos);
+                        }
+                    }
                 }
+                // ray diagonal left down
+                else if (direction.x < 0f && direction.y < 0f)
+                {
+                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndex());
+                    foreach (var square in list)
+                    {
+                        var currentPos = square.transform.position;
 
-                if (direction.x > 0f && direction.y > 0f)
-                {
-                    DrawWord(BoardData.Ray.RayDiagonalRightUp, firstPosition, secondPosition);
+                        if (checkAngle(startPos, currentPos, endPos))
+                        {
+                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
+                            GameEvents.SelectSquareMethod(currentPos);
+                        }
+                    }
                 }
+                // ray diagonal right up
+                else if (direction.x > 0f && direction.y > 0f)
+                {
+                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndex());
+                    foreach (var square in list)
+                    {
+                        var currentPos = square.transform.position;
 
-                if (direction.x > 0f && direction.y < 0f)
-                {
-                    DrawWord(BoardData.Ray.RayDiagonalRightDown, firstPosition, secondPosition);
+                        if (checkAngle(startPos, currentPos, endPos))
+                        {
+                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
+                            GameEvents.SelectSquareMethod(currentPos);
+                        }
+                    }
                 }
+                // ray diagonal right down
+                else if (direction.x > 0f && direction.y < 0f)
+                {
+                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndexByPos(startPos));
+                    foreach (var square in list)
+                    {
+                        var currentPos = square.transform.position;
+
+                        if (checkAngle(startPos, currentPos, endPos))
+                        {
+                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
+                            GameEvents.SelectSquareMethod(currentPos);
+                        }
+                    }
+                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndexByPos(endPos));
+                }
+                //Debug.Log(letterList.Count);
             }
         }
     }
 
-    int i = 0;
-
-    private void DrawWord(BoardData.Ray ray, Vector2 startPos, Vector2 endPos)
+    private bool checkAngle(Vector2 start, Vector2 current, Vector2 end)
     {
-        var list = GetComponent<WordsGrid>().getAllsquarelist();
-        switch (ray)
-        {
-            case BoardData.Ray.RayUp:
-                foreach (var square in list)
-                {
-                    var currentPos = square.transform.position;
-                    // ray up check
-                    if (currentPos.x == startPos.x && startPos.y <= currentPos.y && currentPos.y <= endPos.y)
-                    {
-                        GameEvents.SelectSquareMethod(currentPos);
-                    }
-                }
-
-                break;
-            case BoardData.Ray.RayDown:
-                foreach (var square in list)
-                {
-                    var currentPos = square.transform.position;
-                    // ray up check
-                    if (currentPos.x == startPos.x && startPos.y >= currentPos.y && currentPos.y >= endPos.y)
-                    {
-                        GameEvents.SelectSquareMethod(currentPos);
-                    }
-                }
-
-                break;
-            case BoardData.Ray.RayLeft:
-                foreach (var square in list)
-                {
-                    var currentPos = square.transform.position;
-                    // ray up check
-                    if (currentPos.y == startPos.y && startPos.x >= currentPos.x && currentPos.x >= endPos.x)
-                    {
-                        GameEvents.SelectSquareMethod(currentPos);
-                    }
-                }
-
-                break;
-            case BoardData.Ray.RayRight:
-                foreach (var square in list)
-                {
-                    var currentPos = square.transform.position;
-                    // ray up check
-                    if (currentPos.y == startPos.y && startPos.x <= currentPos.x && currentPos.x <= endPos.x)
-                    {
-                        GameEvents.SelectSquareMethod(currentPos);
-                    }
-                }
-
-                break;
-            case BoardData.Ray.RayDiagonalRightUp:
-                //Debug.Log("Ray Diagonal Right UP");
-                // var canhHuyen = Math.Pow(endPos.x - startPos.x,2) +Math.Pow(endPos.y - startPos.y,2);
-                // Debug.Log(Math.Sqrt(canhHuyen));
-                
-                foreach (var square in list)
-                {
-                         var currentPos = square.transform.position;
-                    //     var hints = Physics.RaycastAll(currentRay, 100.0f);
-                    if (currentPos.x / startPos.x == currentPos.y / startPos.y 
-                        && endPos.x / currentPos.x == endPos.y / currentPos.y)
-                    {
-                        GameEvents.SelectSquareMethod(currentPos);
-                    }
-                }
-                break;
-        }
+        if (Math.Round(Mathf.Atan2((end.x - start.x), (end.y - start.y)), 2) ==
+            Math.Round(Mathf.Atan2((current.x - start.x), (current.y - start.y)), 2)
+            && Math.Round(Mathf.Atan2((end.x - current.x), (end.y - current.y)), 2) ==
+            Math.Round(Mathf.Atan2((current.x - start.x), (current.y - start.y)), 2))
+            return true;
+        return false;
     }
+
 
     private void ClearPosition()
     {
         gameObjectList.Clear();
-        positionList.Clear();
     }
 }

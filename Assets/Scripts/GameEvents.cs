@@ -166,4 +166,16 @@ public static class GameEvents
             OnClearPosition();
         }
     }
+    
+    public delegate void CheckWord();
+
+    public static event CheckWord OnCheckWord;
+
+    public static void CheckWordMethod()
+    {
+        if (OnCheckWord != null)
+        {
+            OnCheckWord();
+        }
+    }
 }

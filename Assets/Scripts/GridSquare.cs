@@ -28,10 +28,19 @@ public class GridSquare : MonoBehaviour
     {
         return _index;
     }
+    public int GetIndexByPos(Vector3 pos)
+    {
+        if(pos == gameObject.transform.position)
+            return _index;
+        return -1;
+    }
 
     public String GetLetter()
     {
-        return _normalLetterData.letter;
+        // Debug.Log(index);
+        // if(_index == index)
+            return _normalLetterData.letter;
+        //return null;
     }
 
     void Start()
@@ -135,12 +144,13 @@ public class GridSquare : MonoBehaviour
             firstPos = gameObject.transform.position;
             positionSave.Add(firstPos);
             GameEvents.GetPositionMethod(firstPos, gameObject);
-            
+            _displayedImage.sprite = _normalLetterData.image;
             //PlaySound();
         }
         else if (Input.GetMouseButtonUp(0))
         {
             secondPos = gameObject.transform.position;
+            GameEvents.CheckWordMethod();
             GameEvents.ClearPositionMethod();
         }
  
@@ -155,6 +165,7 @@ public class GridSquare : MonoBehaviour
     private void OnMouseExit()
     {
         Console.Clear();
+        
         //GameEvents.ClearPositionMethod();
     }
 
@@ -162,6 +173,7 @@ public class GridSquare : MonoBehaviour
     {
         GameEvents.ClearSelectionMethod();
         GameEvents.ClearPositionMethod();
+        GameEvents.CheckWordMethod();
         GameEvents.DisableSquareSelectionMethod();
     }
 
