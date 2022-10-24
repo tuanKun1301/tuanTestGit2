@@ -14,14 +14,18 @@ public class WordsGrid : MonoBehaviour
 
     private List<GameObject> _squareList = new List<GameObject>();
     
+    private GameObject GameDataInstance ;
+
+    private int[,] _gridSquares;
     
     // Start is called before the first frame update
     void Start()
     {
         SpawnGridSquares();
         SetSquarePosition();
+        _gridSquares = new int[currentGameData.selectedBoardData.Columns,currentGameData.selectedBoardData.Rows];
     }
-
+    
     private void SetSquarePosition()
     {
         var squareRect = _squareList[0].GetComponent<SpriteRenderer>().sprite.rect;
@@ -41,6 +45,7 @@ public class WordsGrid : MonoBehaviour
         {
             if (rowNumber + 1 > currentGameData.selectedBoardData.Rows)
             {
+                
                 columnNumber++;
                 rowNumber = 0;
             }
@@ -49,8 +54,19 @@ public class WordsGrid : MonoBehaviour
             var positionY = startPosition.y - offset.y * rowNumber;
             
             square.GetComponent<Transform>().position = new Vector2(positionX, positionY);
+            
+            square.GetComponent<GridSquare>().CreatePoss(currentGameData.selectedBoardData.Columns,currentGameData.selectedBoardData.Rows);
+            square.GetComponent<GridSquare>().SetColumn(columnNumber);
+            square.GetComponent<GridSquare>().SetRow(rowNumber);
+            square.GetComponent<GridSquare>().SetPoss(_squareList.IndexOf(square));
+            
+            //_gridSquares[columnNumber, rowNumber] = _squareList.IndexOf(square);
+            
+            
             rowNumber++;
         }
+
+        
     }
 
 
@@ -105,7 +121,11 @@ public class WordsGrid : MonoBehaviour
                         _squareList[_squareList.Count - 1].transform.SetParent(this.transform);
                         _squareList[_squareList.Count - 1].GetComponent<Transform>().position = new Vector3(0f, 0f, 0f);
                         _squareList[_squareList.Count - 1].transform.localScale = squareScale;
-                        _squareList[_squareList.Count - 1].GetComponent<GridSquare>().SetIndex(_squareList.Count - 1);
+                        //_squareList[_squareList.Count - 1].GetComponent<GridSquare>().SetIndex(_squareList.Count - 1);
+                        
+                        //_squareList[_squareList.Count - 1].GetComponent<GridSquare>().SetColumn(GameDataInstance.Columns);
+                        //_squareList[_squareList.Count - 1].GetComponent<GridSquare>().SetRow(GameDataInstance.Rows);
+                        //Debug.Log($"current Game Data [{squares.Row},{currentGameData.selectedBoardData.Board}]");
                     }
                 }
             }
@@ -161,5 +181,17 @@ public class WordsGrid : MonoBehaviour
     public List<GameObject> getAllsquarelist()
     {
         return _squareList;
+    }
+
+    public int GetSquareIndex(int col, int row)
+    {
+        foreach (var square in getAllsquarelist())
+        {
+            if (square.GetComponent<GridSquare>().GetColumn() == col &&
+                square.GetComponent<GridSquare>().GetRow() == row)
+                return square.GetComponent<GridSquare>().GetIndex();
+
+        }
+        return 0;
     }
 }

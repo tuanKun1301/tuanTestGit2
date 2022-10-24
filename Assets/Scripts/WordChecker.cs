@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Profiling.Experimental;
 using UnityEngine.SceneManagement;
@@ -137,15 +138,13 @@ public class WordChecker : MonoBehaviour
     {
         foreach (var index in letterList.Distinct())
         {
-            foreach (var gameObj in GetComponent<WordsGrid>().getAllsquarelist())
+            //_word += gameObject.GetComponent<GridSquare>().GetLetter(index);
+            foreach (var gameObject in GetComponent<WordsGrid>().getAllsquarelist())
             {
-                //_word += gameObject.GetComponent<GridSquare>().GetLetter(index);
-                if (index == gameObj.GetComponent<GridSquare>().GetIndex())
-                {
-                    //Debug.Log(index);
-                    _word += gameObj.GetComponent<GridSquare>().GetLetter();
-                }
+                _word += gameObject.GetComponent<GridSquare>().GetLetter(index);
             }
+            //Debug.Log(index);
+            
         }
 
         foreach (var searchingWord in currentGameData.selectedBoardData.SearchWords)
@@ -153,7 +152,7 @@ public class WordChecker : MonoBehaviour
             if ((Reverse(_word.Trim()) == searchingWord.Word || _word.Trim() == searchingWord.Word) &&
                 searchingWord.Found == false)
             {
-                Debug.Log("come here");
+                //Debug.Log("come here");
                 searchingWord.Found = true;
                 GameEvents.CorrectWordMethod(_word, _correctSquareList);
                 _completedWords++;
@@ -294,151 +293,163 @@ public class WordChecker : MonoBehaviour
 
         if (uniqueList.Count >= 2)
         {
+            // column 
+            var startCol = uniqueList[0].GetComponent<GridSquare>().GetColumn();
+            var endCol = uniqueList[uniqueList.LastIndexOf(gameObj)].GetComponent<GridSquare>().GetColumn();
+
+            var startRow = uniqueList[0].GetComponent<GridSquare>().GetRow();
+            var endRow = uniqueList[uniqueList.LastIndexOf(gameObj)].GetComponent<GridSquare>().GetRow();
+
             var startPos = uniqueList[0].transform.position;
             var endPos = uniqueList[uniqueList.LastIndexOf(gameObj)].transform.position;
 
             var list = GetComponent<WordsGrid>().getAllsquarelist();
+            // GameEvents.SelectSquareMethod(gameObj.GetComponent<GridSquare>()
+            //     .GetIndex());
             //Debug.Log(startPos + "<-->" + endPos);
             if (startPos != endPos)
             {
                 var direction = (endPos - startPos).normalized;
                 float tolerance = 0.01f;
 
-                GameEvents.SelectSquareMethod(startPos);
-                GameEvents.SelectSquareMethod(endPos);
-                letterList.Add(gameObj.GetComponent<GridSquare>().GetIndex());
+                // var column = gameObj.GetComponent<GridSquare>().GetColumn();
+                // var row = gameObj.GetComponent<GridSquare>().GetRow();
+
+                //GameEvents.SelectSquareMethod(startPos);
+                //GameEvents.SelectSquareMethod(endPos);
+                // letterList.Add(gameObj.GetComponent<GridSquare>().GetIndex());
+                letterList.Add(uniqueList[0].GetComponent<GridSquare>().GetIndex());
                 //ray Up
+                var count = endRow == startRow ? Math.Abs(endCol - startCol) + 1 : Math.Abs(endRow - startRow) + 1;
                 if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - 1f) < tolerance)
                 {
-                    foreach (var square in list)
+                    for (int i = 0; i < count; i++)
                     {
-                        var currentPos = square.transform.position;
-                        square.GetComponent<GridSquare>().GetIndex();
                         // ray up check
-                        if (currentPos.x == startPos.x && startPos.y <= currentPos.y && currentPos.y <= endPos.y)
+                        if (startCol == endCol && startRow >= endRow)
                         {
-                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
-                            GameEvents.SelectSquareMethod(currentPos);
+                            letterList.Add(GetComponent<WordsGrid>().GetSquareIndex(startCol,startRow));
+                            GameEvents.SelectSquareMethod(startCol, startRow);
+                            startRow--;
                         }
                     }
                 }
-                // ray down
-                else if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
+
+                //ray down
+                if (Math.Abs(direction.x) < tolerance && Math.Abs(direction.y - (-1f)) < tolerance)
                 {
-                    foreach (var square in list)
+                    for (int i = 0; i < count; i++)
                     {
-                        var currentPos = square.transform.position;
-                        // ray down check
-                        if (currentPos.x == startPos.x && startPos.y >= currentPos.y && currentPos.y >= endPos.y)
+                        // ray up check
+                        if (startCol == endCol && startRow <= endRow)
                         {
-                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
-                            GameEvents.SelectSquareMethod(currentPos);
+                            letterList.Add(GetComponent<WordsGrid>().GetSquareIndex(startCol,startRow));
+                            GameEvents.SelectSquareMethod(startCol, startRow);
+                            startRow++;
                         }
                     }
                 }
-                // ray left
-                else if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y) < tolerance)
+
+                //ray left
+                if (Math.Abs(direction.x - (-1f)) < tolerance && Math.Abs(direction.y) < tolerance)
                 {
-                    foreach (var square in list)
+                    for (int i = 0; i < count; i++)
                     {
-                        var currentPos = square.transform.position;
-                        // ray left check
-                        if (currentPos.y == startPos.y && startPos.x >= currentPos.x && currentPos.x >= endPos.x)
+                        // ray up check
+                        if (startRow == endRow && startCol >= endCol)
                         {
-                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
-                            GameEvents.SelectSquareMethod(currentPos);
+                            letterList.Add(GetComponent<WordsGrid>().GetSquareIndex(startCol,startRow));
+                            GameEvents.SelectSquareMethod(startCol, startRow);
+                            startCol--;
                         }
                     }
                 }
+
                 // ray right
-                else if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y) < tolerance)
+                if (Math.Abs(direction.x - 1f) < tolerance && Math.Abs(direction.y) < tolerance)
                 {
-                    
-                    foreach (var square in list)
+                    for (int i = 0; i < count; i++)
                     {
-                        var currentPos = square.transform.position;
-                        // ray right check
-                        if (currentPos.y == startPos.y && startPos.x <= currentPos.x && currentPos.x <= endPos.x)
+                        // ray up check
+                        if (startRow == endRow && startCol <= endCol)
                         {
-                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
-                            GameEvents.SelectSquareMethod(currentPos);
+                            letterList.Add(GetComponent<WordsGrid>().GetSquareIndex(startCol,startRow));
+                            GameEvents.SelectSquareMethod(startCol, startRow);
+                            startCol++;
                         }
                     }
                 }
-                // ray diagonal left up
-                else if (direction.x < 0f && direction.y > 0f)
-                {
-                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndex());
-                    foreach (var square in list)
-                    {
-                        var currentPos = square.transform.position;
 
-                        if (checkAngle(startPos, currentPos, endPos))
+                //ray diagonal left up
+                if (direction.x < 0f && direction.y > 0f)
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        // ray up check
+                        if (Math.Abs(endCol - startCol) == Math.Abs(endRow - startRow) && startCol >= endCol &&
+                            startRow >= endRow)
                         {
-                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
-                            GameEvents.SelectSquareMethod(currentPos);
+                            letterList.Add(GetComponent<WordsGrid>().GetSquareIndex(startCol,startRow));
+                            GameEvents.SelectSquareMethod(startCol, startRow);
+                            startCol--;
+                            startRow--;
                         }
                     }
                 }
+
                 // ray diagonal left down
-                else if (direction.x < 0f && direction.y < 0f)
+                if (direction.x < 0f && direction.y < 0f)
                 {
-                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndex());
-                    foreach (var square in list)
+                    for (int i = 0; i < count; i++)
                     {
-                        var currentPos = square.transform.position;
-
-                        if (checkAngle(startPos, currentPos, endPos))
+                        // ray up check
+                        if (Math.Abs(endCol - startCol) == Math.Abs(endRow - startRow) && startCol >= endCol &&
+                            startRow <= endRow)
                         {
-                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
-                            GameEvents.SelectSquareMethod(currentPos);
+                            letterList.Add(GetComponent<WordsGrid>().GetSquareIndex(startCol,startRow));
+                            GameEvents.SelectSquareMethod(startCol, startRow);
+                            startCol--;
+                            startRow++;
                         }
                     }
                 }
+
                 // ray diagonal right up
-                else if (direction.x > 0f && direction.y > 0f)
+                if (direction.x > 0f && direction.y > 0f)
                 {
-                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndex());
-                    foreach (var square in list)
+                    for (int i = 0; i < count; i++)
                     {
-                        var currentPos = square.transform.position;
-
-                        if (checkAngle(startPos, currentPos, endPos))
+                        // ray up check
+                        if (Math.Abs(endCol - startCol) == Math.Abs(endRow - startRow) && startCol <= endCol &&
+                            startRow >= endRow)
                         {
-                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
-                            GameEvents.SelectSquareMethod(currentPos);
+                            letterList.Add(GetComponent<WordsGrid>().GetSquareIndex(startCol,startRow));
+                            GameEvents.SelectSquareMethod(startCol, startRow);
+                            startCol++;
+                            startRow--;
                         }
                     }
                 }
-                // ray diagonal right down
-                else if (direction.x > 0f && direction.y < 0f)
-                {
-                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndexByPos(startPos));
-                    foreach (var square in list)
-                    {
-                        var currentPos = square.transform.position;
 
-                        if (checkAngle(startPos, currentPos, endPos))
+                //ray diagonal right down
+                if (direction.x > 0f && direction.y < 0f)
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        // ray up check
+                        if (Math.Abs(endCol - startCol) == Math.Abs(endRow - startRow) && startCol <= endCol &&
+                            startRow <= endRow)
                         {
-                            letterList.Add(square.GetComponent<GridSquare>().GetIndex());
-                            GameEvents.SelectSquareMethod(currentPos);
+                            letterList.Add(GetComponent<WordsGrid>().GetSquareIndex(startCol,startRow));
+                            GameEvents.SelectSquareMethod(startCol, startRow);
+                            startCol++;
+                            startRow++;
                         }
                     }
-                    letterList.Add(gameObj.GetComponent<GridSquare>().GetIndexByPos(endPos));
                 }
                 //Debug.Log(letterList.Count);
             }
         }
-    }
-
-    private bool checkAngle(Vector2 start, Vector2 current, Vector2 end)
-    {
-        if (Math.Round(Mathf.Atan2((end.x - start.x), (end.y - start.y)), 2) ==
-            Math.Round(Mathf.Atan2((current.x - start.x), (current.y - start.y)), 2)
-            && Math.Round(Mathf.Atan2((end.x - current.x), (end.y - current.y)), 2) ==
-            Math.Round(Mathf.Atan2((current.x - start.x), (current.y - start.y)), 2))
-            return true;
-        return false;
     }
 
 

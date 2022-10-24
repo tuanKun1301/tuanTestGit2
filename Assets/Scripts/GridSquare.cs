@@ -14,33 +14,42 @@ public class GridSquare : MonoBehaviour
 
     private bool _selected;
     private bool _clicked;
-    private int _index = -1;
     private bool _correct;
 
+
+    private int _column;
+    private int _row;
+    private int[,] _index;
+
     private AudioSource _source;
+    // get , set column
 
-    public void SetIndex(int index)
+    public void SetColumn(int column)
     {
-        _index = index;
+        _column = column;
     }
 
-    public int GetIndex()
+    public int GetColumn()
     {
-        return _index;
-    }
-    public int GetIndexByPos(Vector3 pos)
-    {
-        if(pos == gameObject.transform.position)
-            return _index;
-        return -1;
+        return _column;
     }
 
-    public String GetLetter()
+    public void SetRow(int row)
+    {
+        _row = row;
+    }
+
+    public int GetRow()
+    {
+        return _row;
+    }
+
+    public String GetLetter(int index)
     {
         // Debug.Log(index);
-        // if(_index == index)
+        if (_index[_column, _row] == index)
             return _normalLetterData.letter;
-        //return null;
+        return null;
     }
 
     void Start()
@@ -51,7 +60,22 @@ public class GridSquare : MonoBehaviour
         _displayedImage = GetComponent<SpriteRenderer>();
         _source = GetComponent<AudioSource>();
         positionSave = new List<Vector2>();
+    }
 
+    public void CreatePoss(int col, int row)
+    {
+        _index = new int[col, row];
+    }
+
+    public void SetPoss(int index)
+    {
+        _index[_column, _row] = index;
+        //Debug.Log($"x,y position [{_column},{_row}] <> {index}");
+    }
+
+    public int GetIndex()
+    {
+        return _index[_column, _row];
     }
 
     private void OnEnable()
@@ -72,7 +96,7 @@ public class GridSquare : MonoBehaviour
 
     private void CorrectWord(string word, List<int> squareIndexes)
     {
-        if (_selected && squareIndexes.Contains(_index))
+        if (_selected && squareIndexes.Contains(_index[_column, _row]))
         {
             _correct = true;
             _displayedImage.sprite = _correctLetterData.image;
@@ -98,13 +122,13 @@ public class GridSquare : MonoBehaviour
             _displayedImage.sprite = _normalLetterData.image;
     }
 
-    private void SelectSquare(Vector3 position)
+    private void SelectSquare(int column, int row)
     {
-        if (this.gameObject.transform.position == position)
+        if (_column == column && _row == row)
         {
-            
             _displayedImage.sprite = _selectedLetterData.image;
         }
+        // _displayedImage.sprite = _selectedLetterData.image;
     }
 
     public void SetSprite(AlphabetData.LetterData normalLetterData, AlphabetData.LetterData selectedLetterData,
@@ -133,9 +157,10 @@ public class GridSquare : MonoBehaviour
     //     }
     //     CheckSquare();
     // }
-    
+
     private Vector3 secondPos;
     private List<Vector2> positionSave;
+
     private void OnMouseOver()
     {
         Vector3 firstPos;
@@ -153,19 +178,18 @@ public class GridSquare : MonoBehaviour
             GameEvents.CheckWordMethod();
             GameEvents.ClearPositionMethod();
         }
- 
+
         else if (Input.GetMouseButton(0))
         {
             PlaySound();
-            GameEvents.GetPositionMethod(gameObject.transform.position,gameObject);
-            
+            GameEvents.GetPositionMethod(gameObject.transform.position, gameObject);
         }
     }
 
     private void OnMouseExit()
     {
         Console.Clear();
-        
+
         //GameEvents.ClearPositionMethod();
     }
 
@@ -177,15 +201,15 @@ public class GridSquare : MonoBehaviour
         GameEvents.DisableSquareSelectionMethod();
     }
 
-    public void CheckSquare()
-    {
-        if (_selected == false && _clicked == true)
-        {
-            PlaySound();
-            _selected = true;
-            GameEvents.CheckSquareMethod(_normalLetterData.letter, gameObject.transform.position, _index);
-        }
-    }
+    // public void CheckSquare()
+    // {
+    //     if (_selected == false && _clicked == true)
+    //     {
+    //         PlaySound();
+    //         _selected = true;
+    //         GameEvents.CheckSquareMethod(_normalLetterData.letter, gameObject.transform.position, _index);
+    //     }
+    // }
 
     private void PlaySound()
     {
@@ -194,7 +218,4 @@ public class GridSquare : MonoBehaviour
             _source.Play();
         }
     }
-
-    
-    
 }

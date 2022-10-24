@@ -29,15 +29,15 @@ public static class GameEvents
         }
     }
 
-    public delegate void SelectSquare(Vector3 position);
+    public delegate void SelectSquare(int column, int row);
 
     public static event SelectSquare OnSelectSquare;
 
-    public static void SelectSquareMethod(Vector3 position)
+    public static void SelectSquareMethod(int column, int row)
     {
         if (OnSelectSquare != null)
         {
-            OnSelectSquare(position);
+            OnSelectSquare(column,row);
         }
     }
 
