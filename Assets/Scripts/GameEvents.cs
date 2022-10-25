@@ -144,28 +144,18 @@ public static class GameEvents
     
     
     // test logic
-    public delegate void GetPosition(Vector2 firstPos, GameObject gameObj);
+    public delegate void GetGrid(GameObject gameObj);
 
-    public static event GetPosition OnGetPosition;
+    public static event GetGrid OnGetGrid;
 
-    public static void GetPositionMethod(Vector2 firstPos, GameObject gameObj)
+    public static void GetGridMethod(GameObject gameObj)
     {
-        if (OnGetPosition != null)
+        if (OnGetGrid != null)
         {
-            OnGetPosition(firstPos, gameObj);
+            OnGetGrid(gameObj);
         }
     }
-    public delegate void ClearPosition();
-
-    public static event ClearPosition OnClearPosition;
-
-    public static void ClearPositionMethod()
-    {
-        if (OnClearPosition != null)
-        {
-            OnClearPosition();
-        }
-    }
+    
     
     public delegate void CheckWord();
 

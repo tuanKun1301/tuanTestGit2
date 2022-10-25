@@ -16,14 +16,14 @@ public class WordsGrid : MonoBehaviour
     
     private GameObject GameDataInstance ;
 
-    private int[,] _gridSquares;
+   
     
     // Start is called before the first frame update
     void Start()
     {
         SpawnGridSquares();
         SetSquarePosition();
-        _gridSquares = new int[currentGameData.selectedBoardData.Columns,currentGameData.selectedBoardData.Rows];
+        
     }
     
     private void SetSquarePosition()
@@ -54,14 +54,11 @@ public class WordsGrid : MonoBehaviour
             var positionY = startPosition.y - offset.y * rowNumber;
             
             square.GetComponent<Transform>().position = new Vector2(positionX, positionY);
-            
-            square.GetComponent<GridSquare>().CreatePoss(currentGameData.selectedBoardData.Columns,currentGameData.selectedBoardData.Rows);
+            // create board with Two-dimensional arrays and save indexes along with arrays demension
+            square.GetComponent<GridSquare>().CreateArray(currentGameData.selectedBoardData.Columns,currentGameData.selectedBoardData.Rows);
             square.GetComponent<GridSquare>().SetColumn(columnNumber);
             square.GetComponent<GridSquare>().SetRow(rowNumber);
-            square.GetComponent<GridSquare>().SetPoss(_squareList.IndexOf(square));
-            
-            //_gridSquares[columnNumber, rowNumber] = _squareList.IndexOf(square);
-            
+            square.GetComponent<GridSquare>().SetIndex(_squareList.IndexOf(square));
             
             rowNumber++;
         }
@@ -182,15 +179,19 @@ public class WordsGrid : MonoBehaviour
     {
         return _squareList;
     }
-
-    public int GetSquareIndex(int col, int row)
+    /// <summary>
+    /// get all square index according to column number and row number
+    /// </summary>
+    /// <param name="column">collumn number in 2 demensional array</param>
+    /// <param name="row">row number in 2 demensional array</param>
+    /// <returns></returns>
+    public int GetSquareIndex(int column, int row)
     {
         foreach (var square in getAllsquarelist())
         {
-            if (square.GetComponent<GridSquare>().GetColumn() == col &&
+            if (square.GetComponent<GridSquare>().GetColumn() == column &&
                 square.GetComponent<GridSquare>().GetRow() == row)
                 return square.GetComponent<GridSquare>().GetIndex();
-
         }
         return 0;
     }
