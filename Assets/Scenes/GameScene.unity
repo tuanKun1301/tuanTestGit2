@@ -1327,7 +1327,7 @@ GameObject:
   m_Layer: 0
   m_Name: WordsGrid
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1749,7 +1749,7 @@ RectTransform:
   m_Children:
   - {fileID: 848613112}
   m_Father: {fileID: 1579398820}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1956,11 +1956,35 @@ PrefabInstance:
       propertyPath: m_Name
       value: MuteBackgroundSound
       objectReference: {fileID: 0}
+    - target: {fileID: 9219435188873833316, guid: 4c382b194ee5d4c6d8478fb13e2cdc6c, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219435188873833316, guid: 4c382b194ee5d4c6d8478fb13e2cdc6c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219435188873833316, guid: 4c382b194ee5d4c6d8478fb13e2cdc6c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219435188873833316, guid: 4c382b194ee5d4c6d8478fb13e2cdc6c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219435188873833316, guid: 4c382b194ee5d4c6d8478fb13e2cdc6c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 440
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219435188873833316, guid: 4c382b194ee5d4c6d8478fb13e2cdc6c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 870
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c382b194ee5d4c6d8478fb13e2cdc6c, type: 3}
 --- !u!224 &1498604207 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4857959280925328425, guid: 4c382b194ee5d4c6d8478fb13e2cdc6c, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9219435188873833316, guid: 4c382b194ee5d4c6d8478fb13e2cdc6c, type: 3}
   m_PrefabInstance: {fileID: 1498604206}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1549917198
@@ -2134,10 +2158,10 @@ RectTransform:
   - {fileID: 1652494244}
   - {fileID: 556411793}
   - {fileID: 1407190243}
-  - {fileID: 1498604207}
-  - {fileID: 430343831}
   - {fileID: 1416146710}
+  - {fileID: 430343831}
   - {fileID: 1729424244}
+  - {fileID: 1498604207}
   - {fileID: 1760340813}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -2730,7 +2754,7 @@ RectTransform:
   m_Children:
   - {fileID: 1398676168}
   m_Father: {fileID: 1579398820}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

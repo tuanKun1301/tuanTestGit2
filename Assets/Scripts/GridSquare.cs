@@ -12,80 +12,94 @@ public class GridSquare : MonoBehaviour
 
     private SpriteRenderer _displayedImage;
 
-    private bool _selected;
-    private bool _clicked;
-    private int _index = -1;
     private bool _correct;
 
-    private AudioSource _source;
+    private int _column;
+    private int _row;
+    private int[,] _index;
 
-    public void SetIndex(int index)
+    private AudioSource _source;
+    // get , set column
+
+    public void SetColumn(int column)
     {
-        _index = index;
+        _column = column;
     }
 
-    public int GetIndex()
+    public int GetColumn()
     {
-        return _index;
+        return _column;
+    }
+
+    public void SetRow(int row)
+    {
+        _row = row;
+    }
+
+    public int GetRow()
+    {
+        return _row;
+    }
+
+    public String GetLetter(int index)
+    {
+        // Debug.Log(index);
+        if (_index[_column, _row] == index)
+            return _normalLetterData.letter;
+        return null;
     }
 
     void Start()
     {
-        _selected = false;
-        _clicked = false;
         _correct = false;
         _displayedImage = GetComponent<SpriteRenderer>();
         _source = GetComponent<AudioSource>();
     }
 
+    public void CreateArray(int col, int row)
+    {
+        _index = new int[col, row];
+    }
+
+    public void SetIndex(int index)
+    {
+        _index[_column, _row] = index;
+        //Debug.Log($"x,y position [{_column},{_row}] <> {index}");
+    }
+
+    public int GetIndex()
+    {
+        return _index[_column, _row];
+    }
+
     private void OnEnable()
     {
-        GameEvents.OnEnableSquareSelection += OnEnableSquareSelection;
-        GameEvents.OnDisableSquareSelection += OnDisableSquareSelection;
         GameEvents.OnSelectSquare += SelectSquare;
         GameEvents.OnCorrectWord += CorrectWord;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnEnableSquareSelection -= OnEnableSquareSelection;
-        GameEvents.OnDisableSquareSelection -= OnDisableSquareSelection;
         GameEvents.OnSelectSquare -= SelectSquare;
         GameEvents.OnCorrectWord -= CorrectWord;
     }
 
     private void CorrectWord(string word, List<int> squareIndexes)
     {
-        if (_selected && squareIndexes.Contains(_index))
+        if (squareIndexes.Contains(_index[_column, _row]))
         {
             _correct = true;
             _displayedImage.sprite = _correctLetterData.image;
         }
-
-        _selected = false;
-        _clicked = false;
     }
 
-    public void OnEnableSquareSelection()
-    {
-        _clicked = true;
-        _selected = false;
-    }
 
-    public void OnDisableSquareSelection()
+    private void SelectSquare(int column, int row)
     {
-        _clicked = false;
-        _selected = false;
-        if (_correct == true)
-            _displayedImage.sprite = _correctLetterData.image;
-        else
-            _displayedImage.sprite = _normalLetterData.image;
-    }
-
-    private void SelectSquare(Vector3 position)
-    {
-        if (this.gameObject.transform.position == position)
+        if (_column == column && _row == row)
+        {
             _displayedImage.sprite = _selectedLetterData.image;
+        }
     }
 
     public void SetSprite(AlphabetData.LetterData normalLetterData, AlphabetData.LetterData selectedLetterData,
@@ -98,38 +112,74 @@ public class GridSquare : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = _normalLetterData.image;
     }
 
-    private void OnMouseDown()
-    {
-        OnEnableSquareSelection();
-        GameEvents.EnableSquareSelectionMethod();
-        CheckSquare();
-        Debug.Log($"mouse down here: {gameObject.transform.position}");
-        _displayedImage.sprite = _selectedLetterData.image;
-    }
+    // private void OnMouseDown()
+    // {
+    //     OnEnableSquareSelection();
+    //     GameEvents.EnableSquareSelectionMethod();
+    //     CheckSquare();
+    //     _displayedImage.sprite = _selectedLetterData.image;
+    // }
+    //
+    // private void OnMouseEnter()
+    // {
+    //     if (Input.GetMouseButtonDown(0))
+    //     {
+    //         Debug.Log($"pos{gameObject.transform.position}");
+    //     }
+    //     CheckSquare();
+    // }
 
-    private void OnMouseEnter()
+
+    private void OnMouseOver()
     {
-        Debug.Log($"mouse enter here: {gameObject.transform.position}");
-        CheckSquare();
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameEvents.GetGridMethod(gameObject);
+            _displayedImage.sprite = _normalLetterData.image;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            GameEvents.CheckWordMethod();
+        }
+
+        else if (Input.GetMouseButton(0))
+        {
+            PlaySound();
+            GameEvents.GetGridMethod(gameObject);
+        }
     }
 
     private void OnMouseUp()
     {
-        GameEvents.ClearSelectionMethod();
+        GameEvents.CheckWordMethod();
         GameEvents.DisableSquareSelectionMethod();
     }
 
-    public void CheckSquare()
-    {
-        if (_selected == false && _clicked == true)
-        {
-            if (SoundManager.instance.IsSoundFxMuted() == false)
-            {
-                _source.Play();
-            }
+    // public void CheckSquare()
+    // {
+    //     if (_selected == false && _clicked == true)
+    //     {
+    //         PlaySound();
+    //         _selected = true;
+    //         GameEvents.CheckSquareMethod(_normalLetterData.letter, gameObject.transform.position, _index);
+    //     }
+    // }
 
-            _selected = true;
-            GameEvents.CheckSquareMethod(_normalLetterData.letter, gameObject.transform.position, _index);
+    public void ClearSelection()
+    {
+        if (_correct == false)
+        {
+            _displayedImage.sprite = _normalLetterData.image;
         }
+        else
+        {
+            _displayedImage.sprite = _correctLetterData.image;
+        }
+    }
+
+    private void PlaySound()
+    {
+        if (SoundManager.instance.IsSoundFxMuted() == false)
+            _source.Play();
     }
 }

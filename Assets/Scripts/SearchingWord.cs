@@ -33,9 +33,17 @@ public class SearchingWord : MonoBehaviour
 
     private void CorrectWord(string word, List<int> squareIndexes)
     {
-        if (word == _word)
+        if (word == _word || Reverse(_word) == word)
         {
             crossLine.gameObject.SetActive(true);
         }
+    }
+    
+    private String Reverse(string s)
+    {
+        char[] charArray = s.ToCharArray();
+        Array.Reverse(charArray);
+        Debug.Log(new string(charArray));
+        return new string(charArray);
     }
 }

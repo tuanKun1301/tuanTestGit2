@@ -29,15 +29,15 @@ public static class GameEvents
         }
     }
 
-    public delegate void SelectSquare(Vector3 position);
+    public delegate void SelectSquare(int column, int row);
 
     public static event SelectSquare OnSelectSquare;
 
-    public static void SelectSquareMethod(Vector3 position)
+    public static void SelectSquareMethod(int column, int row)
     {
         if (OnSelectSquare != null)
         {
-            OnSelectSquare(position);
+            OnSelectSquare(column,row);
         }
     }
 
@@ -139,6 +139,33 @@ public static class GameEvents
         if (OnToggleSoundFx != null)
         {
             OnToggleSoundFx();
+        }
+    }
+    
+    
+    // test logic
+    public delegate void GetGrid(GameObject gameObj);
+
+    public static event GetGrid OnGetGrid;
+
+    public static void GetGridMethod(GameObject gameObj)
+    {
+        if (OnGetGrid != null)
+        {
+            OnGetGrid(gameObj);
+        }
+    }
+    
+    
+    public delegate void CheckWord();
+
+    public static event CheckWord OnCheckWord;
+
+    public static void CheckWordMethod()
+    {
+        if (OnCheckWord != null)
+        {
+            OnCheckWord();
         }
     }
 }
