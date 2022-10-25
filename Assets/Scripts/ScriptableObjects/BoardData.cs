@@ -29,8 +29,7 @@ public class BoardData : ScriptableObject
     {
         public int Size;
         public string[] Row;
-
-        
+       
         public BoardRow()
         {
         }

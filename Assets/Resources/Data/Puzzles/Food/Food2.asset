@@ -18,39 +18,39 @@ MonoBehaviour:
   Board:
   - Size: 5
     Row:
+    - A
     - M
     - C
-    - Y
-    - D
-    - H
+    - M
+    - Z
   - Size: 5
     Row:
+    - E
+    - M
+    - A
+    - G
+    - G
+  - Size: 5
+    Row:
+    - T
     - I
-    - A
-    - G
-    - A
-    - K
-  - Size: 5
-    Row:
-    - L
     - N
     - G
-    - E
-    - W
+    - Q
   - Size: 5
     Row:
-    - K
+    - P
+    - L
     - D
     - E
-    - T
-    - N
+    - C
   - Size: 5
     Row:
-    - T
+    - W
+    - K
     - Y
-    - H
-    - O
-    - B
+    - Y
+    - V
   SearchWords:
   - Found: 1
     Word: CANDY

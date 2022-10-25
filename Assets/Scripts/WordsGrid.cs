@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,14 +13,19 @@ public class WordsGrid : MonoBehaviour
     public float topPosition;
 
     private List<GameObject> _squareList = new List<GameObject>();
+    
+    private GameObject GameDataInstance ;
 
+   
+    
     // Start is called before the first frame update
     void Start()
     {
         SpawnGridSquares();
         SetSquarePosition();
+        
     }
-
+    
     private void SetSquarePosition()
     {
         var squareRect = _squareList[0].GetComponent<SpriteRenderer>().sprite.rect;
@@ -39,16 +45,25 @@ public class WordsGrid : MonoBehaviour
         {
             if (rowNumber + 1 > currentGameData.selectedBoardData.Rows)
             {
+                
                 columnNumber++;
                 rowNumber = 0;
             }
 
             var positionX = startPosition.x + offset.x * columnNumber;
             var positionY = startPosition.y - offset.y * rowNumber;
-            Debug.Log($"position: ({positionX}, {positionY})");
+            
             square.GetComponent<Transform>().position = new Vector2(positionX, positionY);
+            // create board with Two-dimensional arrays and save indexes along with arrays demension
+            square.GetComponent<GridSquare>().CreateArray(currentGameData.selectedBoardData.Columns,currentGameData.selectedBoardData.Rows);
+            square.GetComponent<GridSquare>().SetColumn(columnNumber);
+            square.GetComponent<GridSquare>().SetRow(rowNumber);
+            square.GetComponent<GridSquare>().SetIndex(_squareList.IndexOf(square));
+            
             rowNumber++;
         }
+
+        
     }
 
 
@@ -99,11 +114,15 @@ public class WordsGrid : MonoBehaviour
                     {
                         _squareList.Add(Instantiate(gridSquarePrefab));
                         _squareList[_squareList.Count - 1].GetComponent<GridSquare>()
-                            .SetSprite(normalLetterData, correctLetterData, selectedLetterData);/*set sprite*/
+                            .SetSprite(normalLetterData, correctLetterData, selectedLetterData);
                         _squareList[_squareList.Count - 1].transform.SetParent(this.transform);
                         _squareList[_squareList.Count - 1].GetComponent<Transform>().position = new Vector3(0f, 0f, 0f);
                         _squareList[_squareList.Count - 1].transform.localScale = squareScale;
-                        _squareList[_squareList.Count - 1].GetComponent<GridSquare>().SetIndex(_squareList.Count - 1);
+                        //_squareList[_squareList.Count - 1].GetComponent<GridSquare>().SetIndex(_squareList.Count - 1);
+                        
+                        //_squareList[_squareList.Count - 1].GetComponent<GridSquare>().SetColumn(GameDataInstance.Columns);
+                        //_squareList[_squareList.Count - 1].GetComponent<GridSquare>().SetRow(GameDataInstance.Rows);
+                        //Debug.Log($"current Game Data [{squares.Row},{currentGameData.selectedBoardData.Board}]");
                     }
                 }
             }
@@ -154,5 +173,26 @@ public class WordsGrid : MonoBehaviour
         float height = Camera.main.orthographicSize * 2;
         float width = (1.7f * height) * Screen.width / Screen.height;
         return width / 2;
+    }
+
+    public List<GameObject> getAllsquarelist()
+    {
+        return _squareList;
+    }
+    /// <summary>
+    /// get all square index according to column number and row number
+    /// </summary>
+    /// <param name="column">collumn number in 2 demensional array</param>
+    /// <param name="row">row number in 2 demensional array</param>
+    /// <returns></returns>
+    public int GetSquareIndex(int column, int row)
+    {
+        foreach (var square in getAllsquarelist())
+        {
+            if (square.GetComponent<GridSquare>().GetColumn() == column &&
+                square.GetComponent<GridSquare>().GetRow() == row)
+                return square.GetComponent<GridSquare>().GetIndex();
+        }
+        return 0;
     }
 }

@@ -92,7 +92,6 @@ public class BoardDataDrawer : Editor
         rowStyle.fixedWidth = 40;
         rowStyle.alignment = TextAnchor.MiddleCenter;
 
-
         var textFieldStyle = new GUIStyle();
         textFieldStyle.normal.background = Texture2D.grayTexture;
         textFieldStyle.normal.textColor = Color.white;
@@ -137,15 +136,12 @@ public class BoardDataDrawer : Editor
         {
             var element = l.serializedProperty.GetArrayElementAtIndex(index);
             rect.y += 2;
-            //Debug.Log(propertyName);
+            
             EditorGUI.PropertyField(
                 new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, EditorGUIUtility.singleLineHeight),
                 element.FindPropertyRelative("Word"), GUIContent.none);
         };
-        // foreach (var data in list.l)
-        // {
-        //     Debug.Log("Show Name:" + data );
-        // }    
+           
     }
 
     private void ConvertToUpperButton()
@@ -206,7 +202,7 @@ public class BoardDataDrawer : Editor
     /// list all drawable ray after check, then random in listDrawableRays to draw word
     /// drawnWord to listed all word which is successfully drawn on board, using to compare to get new word
     /// </summary>
-    private BoardData boardData;
+    
 
     private List<BoardData.Ray> listDrawableRays = new List<BoardData.Ray>();
 
@@ -232,9 +228,7 @@ public class BoardDataDrawer : Editor
                 if (listDrawableRays.Count > 0)
                 {
                     int index = Random.Range(0, listDrawableRays.Count);
-                    //Debug.Log($"random ray: {listDrawableRays[index]}");
-
-
+                   
                     //if(index < listDrawableRays.Count)
                     DrawWord(listDrawableRays[index], word, randomColumn, randomRow);
                     listDrawableRays.Clear();
